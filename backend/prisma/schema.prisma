@@ -22,7 +22,13 @@ model User {
   sessions              WorkoutSession[]
   recurringTransactions RecurringTransaction[]
   tasks                 Task[]
-  exercises             Exercise[] // <-- Adicionado para gerenciar exercícios customizados do usuário
+  exercises             Exercise[]
+
+  // Relações do Módulo de Nutrição
+  foods                 Food[]
+  mealLogs              MealLog[]
+  weightLogs            WeightLog[]
+  nutritionGoal         NutritionGoal?
 
   @@index([email, deletedAt])
 }
@@ -37,7 +43,7 @@ model Category {
 
   transactions          Transaction[]
   exercises             Exercise[]
-  recurringTransactions RecurringTransaction[] // Relacionamento com as recorrências de uma categoria
+  recurringTransactions RecurringTransaction[]
 
   @@index([userId, type, deletedAt])
 }
@@ -81,7 +87,7 @@ model RecurringTransaction {
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 
-  transactions Transaction[] // Transações físicas geradas por esta recorrência
+  transactions Transaction[]
 
   @@index([userId, isActive, nextDate, deletedAt])
 }
@@ -123,8 +129,8 @@ model Exercise {
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 
-  userId String? // <-- Novo campo
-  user   User?   @relation(fields: [userId], references: [id]) // <-- Nova relação
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
 
   deletedAt DateTime? // Soft Delete
 
@@ -141,9 +147,9 @@ model WorkoutPlanExercise {
   exerciseId    String
   exercise      Exercise    @relation(fields: [exerciseId], references: [id])
   
-  targetSets    Int         @default(0) // Quantidade obrigatória de séries recomendada
-  targetMinReps Int         @default(0) // Repetições mínimas obrigatórias
-  targetMaxReps Int         @default(0) // Repetições máximas obrigatórias
+  targetSets    Int         @default(0)
+  targetMinReps Int         @default(0)
+  targetMaxReps Int         @default(0)
 
   createdAt     DateTime    @default(now())
 
@@ -211,4 +217,144 @@ model Task {
   user   User   @relation(fields: [userId], references: [id])
 
   @@index([userId, priority, status, deletedAt]) 
+}
+
+// ==========================================
+// ENUMS DO MÓDULO DE NUTRIÇÃO
+// ==========================================
+
+enum ServingUnit {
+  GRAM
+  MILLILITER
+  UNIT
+  TABLESPOON
+  TEASPOON
+  SCOOP
+  CUP
+}
+
+enum MealType {
+  BREAKFAST
+  MORNING_SNACK
+  LUNCH
+  AFTERNOON_SNACK
+  DINNER
+  SUPPER
+  SNACK
+}
+
+enum ActivityLevel {
+  SEDENTARY
+  LIGHTLY_ACTIVE
+  MODERATELY_ACTIVE
+  VERY_ACTIVE
+  EXTRA_ACTIVE
+}
+
+enum BiologicalSex {
+  MALE
+  FEMALE
+}
+
+// ==========================================
+// MODELOS DO MÓDULO DE NUTRIÇÃO
+// ==========================================
+
+model Food {
+  id          String      @id @default(uuid())
+  name        String
+  brand       String?
+  servingSize Decimal     @db.Decimal(10, 2)
+  servingUnit ServingUnit @default(GRAM)
+
+  calories    Decimal     @db.Decimal(10, 2)
+  protein     Decimal     @db.Decimal(10, 2)
+  carbs       Decimal     @db.Decimal(10, 2)
+  fat         Decimal     @db.Decimal(10, 2)
+  fiber       Decimal?    @db.Decimal(10, 2)
+
+  userId      String?
+  user        User?       @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  deletedAt   DateTime?
+
+  mealItems   MealFoodItem[]
+
+  @@index([userId, name, deletedAt])
+}
+
+model MealLog {
+  id        String    @id @default(uuid())
+  date      DateTime  @db.Date
+  mealType  MealType  @default(LUNCH)
+  notes     String?
+
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+
+  items     MealFoodItem[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([userId, date, deletedAt])
+}
+
+model MealFoodItem {
+  id                 String   @id @default(uuid())
+  mealLogId          String
+  mealLog            MealLog  @relation(fields: [mealLogId], references: [id], onDelete: Cascade)
+
+  foodId             String
+  food               Food     @relation(fields: [foodId], references: [id])
+
+  quantity           Decimal  @db.Decimal(10, 2)
+
+  consumedCalories   Decimal  @db.Decimal(10, 2)
+  consumedProtein    Decimal  @db.Decimal(10, 2)
+  consumedCarbs      Decimal  @db.Decimal(10, 2)
+  consumedFat        Decimal  @db.Decimal(10, 2)
+  consumedFiber      Decimal? @db.Decimal(10, 2)
+
+  createdAt          DateTime @default(now())
+
+  @@index([mealLogId])
+  @@index([foodId])
+}
+
+model WeightLog {
+  id        String    @id @default(uuid())
+  weight    Decimal   @db.Decimal(6, 2)
+  date      DateTime  @default(now())
+  notes     String?
+
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([userId, date, deletedAt])
+}
+
+model NutritionGoal {
+  id             String    @id @default(uuid())
+  userId         String    @unique
+  user           User      @relation(fields: [userId], references: [id])
+
+  targetCalories Decimal   @db.Decimal(10, 2)
+  targetProtein  Decimal   @db.Decimal(10, 2)
+  targetCarbs    Decimal   @db.Decimal(10, 2)
+  targetFat      Decimal   @db.Decimal(10, 2)
+  targetFiber    Decimal?  @db.Decimal(10, 2)
+
+  targetWeight   Decimal?  @db.Decimal(6, 2)
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([userId])
 }

@@ -2,7 +2,11 @@
   "output": {
     "filePath": "repomix-output-backend.md",
     "style": "markdown",
-    "parsable": true
+    "removeComments": true,
+    "removeEmptyLines": true,
+    "showLineNumbers": false,
+    "parsableStyle": false,
+    "fileSummary": false
   },
   "include": ["**/*"],
   "ignore": {
