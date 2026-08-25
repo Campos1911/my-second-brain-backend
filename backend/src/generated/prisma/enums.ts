@@ -53,3 +53,48 @@ export const TaskStatus = {
 } as const
 
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+
+
+export const ServingUnit = {
+  GRAM: 'GRAM',
+  MILLILITER: 'MILLILITER',
+  UNIT: 'UNIT',
+  TABLESPOON: 'TABLESPOON',
+  TEASPOON: 'TEASPOON',
+  SCOOP: 'SCOOP',
+  CUP: 'CUP'
+} as const
+
+export type ServingUnit = (typeof ServingUnit)[keyof typeof ServingUnit]
+
+
+export const MealType = {
+  BREAKFAST: 'BREAKFAST',
+  MORNING_SNACK: 'MORNING_SNACK',
+  LUNCH: 'LUNCH',
+  AFTERNOON_SNACK: 'AFTERNOON_SNACK',
+  DINNER: 'DINNER',
+  SUPPER: 'SUPPER',
+  SNACK: 'SNACK'
+} as const
+
+export type MealType = (typeof MealType)[keyof typeof MealType]
+
+
+export const ActivityLevel = {
+  SEDENTARY: 'SEDENTARY',
+  LIGHTLY_ACTIVE: 'LIGHTLY_ACTIVE',
+  MODERATELY_ACTIVE: 'MODERATELY_ACTIVE',
+  VERY_ACTIVE: 'VERY_ACTIVE',
+  EXTRA_ACTIVE: 'EXTRA_ACTIVE'
+} as const
+
+export type ActivityLevel = (typeof ActivityLevel)[keyof typeof ActivityLevel]
+
+
+export const BiologicalSex = {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE'
+} as const
+
+export type BiologicalSex = (typeof BiologicalSex)[keyof typeof BiologicalSex]

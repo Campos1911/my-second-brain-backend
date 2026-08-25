@@ -60,7 +60,12 @@ export const ModelName = {
   WorkoutPlanExercise: 'WorkoutPlanExercise',
   WorkoutSession: 'WorkoutSession',
   SetLog: 'SetLog',
-  Task: 'Task'
+  Task: 'Task',
+  Food: 'Food',
+  MealLog: 'MealLog',
+  MealFoodItem: 'MealFoodItem',
+  WeightLog: 'WeightLog',
+  NutritionGoal: 'NutritionGoal'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -212,6 +217,85 @@ export const TaskScalarFieldEnum = {
 } as const
 
 export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
+
+
+export const FoodScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  brand: 'brand',
+  servingSize: 'servingSize',
+  servingUnit: 'servingUnit',
+  calories: 'calories',
+  protein: 'protein',
+  carbs: 'carbs',
+  fat: 'fat',
+  fiber: 'fiber',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type FoodScalarFieldEnum = (typeof FoodScalarFieldEnum)[keyof typeof FoodScalarFieldEnum]
+
+
+export const MealLogScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  mealType: 'mealType',
+  notes: 'notes',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type MealLogScalarFieldEnum = (typeof MealLogScalarFieldEnum)[keyof typeof MealLogScalarFieldEnum]
+
+
+export const MealFoodItemScalarFieldEnum = {
+  id: 'id',
+  mealLogId: 'mealLogId',
+  foodId: 'foodId',
+  quantity: 'quantity',
+  consumedCalories: 'consumedCalories',
+  consumedProtein: 'consumedProtein',
+  consumedCarbs: 'consumedCarbs',
+  consumedFat: 'consumedFat',
+  consumedFiber: 'consumedFiber',
+  createdAt: 'createdAt'
+} as const
+
+export type MealFoodItemScalarFieldEnum = (typeof MealFoodItemScalarFieldEnum)[keyof typeof MealFoodItemScalarFieldEnum]
+
+
+export const WeightLogScalarFieldEnum = {
+  id: 'id',
+  weight: 'weight',
+  date: 'date',
+  notes: 'notes',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type WeightLogScalarFieldEnum = (typeof WeightLogScalarFieldEnum)[keyof typeof WeightLogScalarFieldEnum]
+
+
+export const NutritionGoalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  targetCalories: 'targetCalories',
+  targetProtein: 'targetProtein',
+  targetCarbs: 'targetCarbs',
+  targetFat: 'targetFat',
+  targetFiber: 'targetFiber',
+  targetWeight: 'targetWeight',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NutritionGoalScalarFieldEnum = (typeof NutritionGoalScalarFieldEnum)[keyof typeof NutritionGoalScalarFieldEnum]
 
 
 export const SortOrder = {

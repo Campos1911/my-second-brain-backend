@@ -393,7 +393,12 @@ export const ModelName = {
   WorkoutPlanExercise: 'WorkoutPlanExercise',
   WorkoutSession: 'WorkoutSession',
   SetLog: 'SetLog',
-  Task: 'Task'
+  Task: 'Task',
+  Food: 'Food',
+  MealLog: 'MealLog',
+  MealFoodItem: 'MealFoodItem',
+  WeightLog: 'WeightLog',
+  NutritionGoal: 'NutritionGoal'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "category" | "recurringTransaction" | "transaction" | "workoutPlan" | "exercise" | "workoutPlanExercise" | "workoutSession" | "setLog" | "task"
+    modelProps: "user" | "category" | "recurringTransaction" | "transaction" | "workoutPlan" | "exercise" | "workoutPlanExercise" | "workoutSession" | "setLog" | "task" | "food" | "mealLog" | "mealFoodItem" | "weightLog" | "nutritionGoal"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1153,6 +1158,376 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Food: {
+      payload: Prisma.$FoodPayload<ExtArgs>
+      fields: Prisma.FoodFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FoodFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FoodFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload>
+        }
+        findFirst: {
+          args: Prisma.FoodFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FoodFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload>
+        }
+        findMany: {
+          args: Prisma.FoodFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload>[]
+        }
+        create: {
+          args: Prisma.FoodCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload>
+        }
+        createMany: {
+          args: Prisma.FoodCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FoodCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload>[]
+        }
+        delete: {
+          args: Prisma.FoodDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload>
+        }
+        update: {
+          args: Prisma.FoodUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload>
+        }
+        deleteMany: {
+          args: Prisma.FoodDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FoodUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FoodUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload>[]
+        }
+        upsert: {
+          args: Prisma.FoodUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FoodPayload>
+        }
+        aggregate: {
+          args: Prisma.FoodAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFood>
+        }
+        groupBy: {
+          args: Prisma.FoodGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FoodGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FoodCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FoodCountAggregateOutputType> | number
+        }
+      }
+    }
+    MealLog: {
+      payload: Prisma.$MealLogPayload<ExtArgs>
+      fields: Prisma.MealLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MealLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MealLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload>
+        }
+        findFirst: {
+          args: Prisma.MealLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MealLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload>
+        }
+        findMany: {
+          args: Prisma.MealLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload>[]
+        }
+        create: {
+          args: Prisma.MealLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload>
+        }
+        createMany: {
+          args: Prisma.MealLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MealLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload>[]
+        }
+        delete: {
+          args: Prisma.MealLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload>
+        }
+        update: {
+          args: Prisma.MealLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.MealLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MealLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MealLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.MealLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealLogPayload>
+        }
+        aggregate: {
+          args: Prisma.MealLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMealLog>
+        }
+        groupBy: {
+          args: Prisma.MealLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MealLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MealLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MealLogCountAggregateOutputType> | number
+        }
+      }
+    }
+    MealFoodItem: {
+      payload: Prisma.$MealFoodItemPayload<ExtArgs>
+      fields: Prisma.MealFoodItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MealFoodItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MealFoodItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload>
+        }
+        findFirst: {
+          args: Prisma.MealFoodItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MealFoodItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload>
+        }
+        findMany: {
+          args: Prisma.MealFoodItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload>[]
+        }
+        create: {
+          args: Prisma.MealFoodItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload>
+        }
+        createMany: {
+          args: Prisma.MealFoodItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MealFoodItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload>[]
+        }
+        delete: {
+          args: Prisma.MealFoodItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload>
+        }
+        update: {
+          args: Prisma.MealFoodItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.MealFoodItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MealFoodItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MealFoodItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.MealFoodItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MealFoodItemPayload>
+        }
+        aggregate: {
+          args: Prisma.MealFoodItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMealFoodItem>
+        }
+        groupBy: {
+          args: Prisma.MealFoodItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MealFoodItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MealFoodItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MealFoodItemCountAggregateOutputType> | number
+        }
+      }
+    }
+    WeightLog: {
+      payload: Prisma.$WeightLogPayload<ExtArgs>
+      fields: Prisma.WeightLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WeightLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WeightLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload>
+        }
+        findFirst: {
+          args: Prisma.WeightLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WeightLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload>
+        }
+        findMany: {
+          args: Prisma.WeightLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload>[]
+        }
+        create: {
+          args: Prisma.WeightLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload>
+        }
+        createMany: {
+          args: Prisma.WeightLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WeightLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload>[]
+        }
+        delete: {
+          args: Prisma.WeightLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload>
+        }
+        update: {
+          args: Prisma.WeightLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.WeightLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WeightLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WeightLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.WeightLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightLogPayload>
+        }
+        aggregate: {
+          args: Prisma.WeightLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWeightLog>
+        }
+        groupBy: {
+          args: Prisma.WeightLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WeightLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WeightLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WeightLogCountAggregateOutputType> | number
+        }
+      }
+    }
+    NutritionGoal: {
+      payload: Prisma.$NutritionGoalPayload<ExtArgs>
+      fields: Prisma.NutritionGoalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NutritionGoalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NutritionGoalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload>
+        }
+        findFirst: {
+          args: Prisma.NutritionGoalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NutritionGoalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload>
+        }
+        findMany: {
+          args: Prisma.NutritionGoalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload>[]
+        }
+        create: {
+          args: Prisma.NutritionGoalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload>
+        }
+        createMany: {
+          args: Prisma.NutritionGoalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.NutritionGoalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload>[]
+        }
+        delete: {
+          args: Prisma.NutritionGoalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload>
+        }
+        update: {
+          args: Prisma.NutritionGoalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload>
+        }
+        deleteMany: {
+          args: Prisma.NutritionGoalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NutritionGoalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.NutritionGoalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload>[]
+        }
+        upsert: {
+          args: Prisma.NutritionGoalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NutritionGoalPayload>
+        }
+        aggregate: {
+          args: Prisma.NutritionGoalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNutritionGoal>
+        }
+        groupBy: {
+          args: Prisma.NutritionGoalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NutritionGoalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NutritionGoalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NutritionGoalCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1327,6 +1702,85 @@ export const TaskScalarFieldEnum = {
 export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
 
 
+export const FoodScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  brand: 'brand',
+  servingSize: 'servingSize',
+  servingUnit: 'servingUnit',
+  calories: 'calories',
+  protein: 'protein',
+  carbs: 'carbs',
+  fat: 'fat',
+  fiber: 'fiber',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type FoodScalarFieldEnum = (typeof FoodScalarFieldEnum)[keyof typeof FoodScalarFieldEnum]
+
+
+export const MealLogScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  mealType: 'mealType',
+  notes: 'notes',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type MealLogScalarFieldEnum = (typeof MealLogScalarFieldEnum)[keyof typeof MealLogScalarFieldEnum]
+
+
+export const MealFoodItemScalarFieldEnum = {
+  id: 'id',
+  mealLogId: 'mealLogId',
+  foodId: 'foodId',
+  quantity: 'quantity',
+  consumedCalories: 'consumedCalories',
+  consumedProtein: 'consumedProtein',
+  consumedCarbs: 'consumedCarbs',
+  consumedFat: 'consumedFat',
+  consumedFiber: 'consumedFiber',
+  createdAt: 'createdAt'
+} as const
+
+export type MealFoodItemScalarFieldEnum = (typeof MealFoodItemScalarFieldEnum)[keyof typeof MealFoodItemScalarFieldEnum]
+
+
+export const WeightLogScalarFieldEnum = {
+  id: 'id',
+  weight: 'weight',
+  date: 'date',
+  notes: 'notes',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type WeightLogScalarFieldEnum = (typeof WeightLogScalarFieldEnum)[keyof typeof WeightLogScalarFieldEnum]
+
+
+export const NutritionGoalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  targetCalories: 'targetCalories',
+  targetProtein: 'targetProtein',
+  targetCarbs: 'targetCarbs',
+  targetFat: 'targetFat',
+  targetFiber: 'targetFiber',
+  targetWeight: 'targetWeight',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NutritionGoalScalarFieldEnum = (typeof NutritionGoalScalarFieldEnum)[keyof typeof NutritionGoalScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1491,6 +1945,34 @@ export type ListEnumTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'ServingUnit'
+ */
+export type EnumServingUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ServingUnit'>
+    
+
+
+/**
+ * Reference to a field of type 'ServingUnit[]'
+ */
+export type ListEnumServingUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ServingUnit[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MealType'
+ */
+export type EnumMealTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MealType'>
+    
+
+
+/**
+ * Reference to a field of type 'MealType[]'
+ */
+export type ListEnumMealTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MealType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1623,6 +2105,11 @@ export type GlobalOmitConfig = {
   workoutSession?: Prisma.WorkoutSessionOmit
   setLog?: Prisma.SetLogOmit
   task?: Prisma.TaskOmit
+  food?: Prisma.FoodOmit
+  mealLog?: Prisma.MealLogOmit
+  mealFoodItem?: Prisma.MealFoodItemOmit
+  weightLog?: Prisma.WeightLogOmit
+  nutritionGoal?: Prisma.NutritionGoalOmit
 }
 
 /* Types for Logging */

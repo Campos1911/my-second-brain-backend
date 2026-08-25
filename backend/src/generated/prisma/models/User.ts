@@ -197,6 +197,10 @@ export type UserWhereInput = {
   recurringTransactions?: Prisma.RecurringTransactionListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   exercises?: Prisma.ExerciseListRelationFilter
+  foods?: Prisma.FoodListRelationFilter
+  mealLogs?: Prisma.MealLogListRelationFilter
+  weightLogs?: Prisma.WeightLogListRelationFilter
+  nutritionGoal?: Prisma.XOR<Prisma.NutritionGoalNullableScalarRelationFilter, Prisma.NutritionGoalWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -213,6 +217,10 @@ export type UserOrderByWithRelationInput = {
   recurringTransactions?: Prisma.RecurringTransactionOrderByRelationAggregateInput
   tasks?: Prisma.TaskOrderByRelationAggregateInput
   exercises?: Prisma.ExerciseOrderByRelationAggregateInput
+  foods?: Prisma.FoodOrderByRelationAggregateInput
+  mealLogs?: Prisma.MealLogOrderByRelationAggregateInput
+  weightLogs?: Prisma.WeightLogOrderByRelationAggregateInput
+  nutritionGoal?: Prisma.NutritionGoalOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -232,6 +240,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   recurringTransactions?: Prisma.RecurringTransactionListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   exercises?: Prisma.ExerciseListRelationFilter
+  foods?: Prisma.FoodListRelationFilter
+  mealLogs?: Prisma.MealLogListRelationFilter
+  weightLogs?: Prisma.WeightLogListRelationFilter
+  nutritionGoal?: Prisma.XOR<Prisma.NutritionGoalNullableScalarRelationFilter, Prisma.NutritionGoalWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -272,6 +284,10 @@ export type UserCreateInput = {
   recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -288,6 +304,10 @@ export type UserUncheckedCreateInput = {
   recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -304,6 +324,10 @@ export type UserUpdateInput = {
   recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -320,6 +344,10 @@ export type UserUncheckedUpdateInput = {
   recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -500,6 +528,64 @@ export type UserUpdateOneRequiredWithoutTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTasksInput, Prisma.UserUpdateWithoutTasksInput>, Prisma.UserUncheckedUpdateWithoutTasksInput>
 }
 
+export type UserCreateNestedOneWithoutFoodsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFoodsInput, Prisma.UserUncheckedCreateWithoutFoodsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFoodsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutFoodsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFoodsInput, Prisma.UserUncheckedCreateWithoutFoodsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFoodsInput
+  upsert?: Prisma.UserUpsertWithoutFoodsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFoodsInput, Prisma.UserUpdateWithoutFoodsInput>, Prisma.UserUncheckedUpdateWithoutFoodsInput>
+}
+
+export type UserCreateNestedOneWithoutMealLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMealLogsInput, Prisma.UserUncheckedCreateWithoutMealLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMealLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMealLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMealLogsInput, Prisma.UserUncheckedCreateWithoutMealLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMealLogsInput
+  upsert?: Prisma.UserUpsertWithoutMealLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMealLogsInput, Prisma.UserUpdateWithoutMealLogsInput>, Prisma.UserUncheckedUpdateWithoutMealLogsInput>
+}
+
+export type UserCreateNestedOneWithoutWeightLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWeightLogsInput, Prisma.UserUncheckedCreateWithoutWeightLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWeightLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWeightLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWeightLogsInput, Prisma.UserUncheckedCreateWithoutWeightLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWeightLogsInput
+  upsert?: Prisma.UserUpsertWithoutWeightLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWeightLogsInput, Prisma.UserUpdateWithoutWeightLogsInput>, Prisma.UserUncheckedUpdateWithoutWeightLogsInput>
+}
+
+export type UserCreateNestedOneWithoutNutritionGoalInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNutritionGoalInput, Prisma.UserUncheckedCreateWithoutNutritionGoalInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNutritionGoalInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNutritionGoalNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNutritionGoalInput, Prisma.UserUncheckedCreateWithoutNutritionGoalInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNutritionGoalInput
+  upsert?: Prisma.UserUpsertWithoutNutritionGoalInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNutritionGoalInput, Prisma.UserUpdateWithoutNutritionGoalInput>, Prisma.UserUncheckedUpdateWithoutNutritionGoalInput>
+}
+
 export type UserCreateWithoutCategoriesInput = {
   id?: string
   email: string
@@ -513,6 +599,10 @@ export type UserCreateWithoutCategoriesInput = {
   recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCategoriesInput = {
@@ -528,6 +618,10 @@ export type UserUncheckedCreateWithoutCategoriesInput = {
   recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCategoriesInput = {
@@ -559,6 +653,10 @@ export type UserUpdateWithoutCategoriesInput = {
   recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCategoriesInput = {
@@ -574,6 +672,10 @@ export type UserUncheckedUpdateWithoutCategoriesInput = {
   recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRecurringTransactionsInput = {
@@ -589,6 +691,10 @@ export type UserCreateWithoutRecurringTransactionsInput = {
   sessions?: Prisma.WorkoutSessionCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRecurringTransactionsInput = {
@@ -604,6 +710,10 @@ export type UserUncheckedCreateWithoutRecurringTransactionsInput = {
   sessions?: Prisma.WorkoutSessionUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRecurringTransactionsInput = {
@@ -635,6 +745,10 @@ export type UserUpdateWithoutRecurringTransactionsInput = {
   sessions?: Prisma.WorkoutSessionUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecurringTransactionsInput = {
@@ -650,6 +764,10 @@ export type UserUncheckedUpdateWithoutRecurringTransactionsInput = {
   sessions?: Prisma.WorkoutSessionUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTransactionsInput = {
@@ -665,6 +783,10 @@ export type UserCreateWithoutTransactionsInput = {
   recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -680,6 +802,10 @@ export type UserUncheckedCreateWithoutTransactionsInput = {
   recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -711,6 +837,10 @@ export type UserUpdateWithoutTransactionsInput = {
   recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -726,6 +856,10 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
   recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWorkoutPlansInput = {
@@ -741,6 +875,10 @@ export type UserCreateWithoutWorkoutPlansInput = {
   recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWorkoutPlansInput = {
@@ -756,6 +894,10 @@ export type UserUncheckedCreateWithoutWorkoutPlansInput = {
   recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWorkoutPlansInput = {
@@ -787,6 +929,10 @@ export type UserUpdateWithoutWorkoutPlansInput = {
   recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWorkoutPlansInput = {
@@ -802,6 +948,10 @@ export type UserUncheckedUpdateWithoutWorkoutPlansInput = {
   recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutExercisesInput = {
@@ -817,6 +967,10 @@ export type UserCreateWithoutExercisesInput = {
   sessions?: Prisma.WorkoutSessionCreateNestedManyWithoutUserInput
   recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutExercisesInput = {
@@ -832,6 +986,10 @@ export type UserUncheckedCreateWithoutExercisesInput = {
   sessions?: Prisma.WorkoutSessionUncheckedCreateNestedManyWithoutUserInput
   recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutExercisesInput = {
@@ -863,6 +1021,10 @@ export type UserUpdateWithoutExercisesInput = {
   sessions?: Prisma.WorkoutSessionUpdateManyWithoutUserNestedInput
   recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutExercisesInput = {
@@ -878,6 +1040,10 @@ export type UserUncheckedUpdateWithoutExercisesInput = {
   sessions?: Prisma.WorkoutSessionUncheckedUpdateManyWithoutUserNestedInput
   recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -893,6 +1059,10 @@ export type UserCreateWithoutSessionsInput = {
   recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -908,6 +1078,10 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -939,6 +1113,10 @@ export type UserUpdateWithoutSessionsInput = {
   recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -954,6 +1132,10 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTasksInput = {
@@ -969,6 +1151,10 @@ export type UserCreateWithoutTasksInput = {
   sessions?: Prisma.WorkoutSessionCreateNestedManyWithoutUserInput
   recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTasksInput = {
@@ -984,6 +1170,10 @@ export type UserUncheckedCreateWithoutTasksInput = {
   sessions?: Prisma.WorkoutSessionUncheckedCreateNestedManyWithoutUserInput
   recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
   exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTasksInput = {
@@ -1015,6 +1205,10 @@ export type UserUpdateWithoutTasksInput = {
   sessions?: Prisma.WorkoutSessionUpdateManyWithoutUserNestedInput
   recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTasksInput = {
@@ -1030,6 +1224,378 @@ export type UserUncheckedUpdateWithoutTasksInput = {
   sessions?: Prisma.WorkoutSessionUncheckedUpdateManyWithoutUserNestedInput
   recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
   exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFoodsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  workoutPlans?: Prisma.WorkoutPlanCreateNestedManyWithoutUserInput
+  sessions?: Prisma.WorkoutSessionCreateNestedManyWithoutUserInput
+  recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFoodsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  workoutPlans?: Prisma.WorkoutPlanUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.WorkoutSessionUncheckedCreateNestedManyWithoutUserInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFoodsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFoodsInput, Prisma.UserUncheckedCreateWithoutFoodsInput>
+}
+
+export type UserUpsertWithoutFoodsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFoodsInput, Prisma.UserUncheckedUpdateWithoutFoodsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFoodsInput, Prisma.UserUncheckedCreateWithoutFoodsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFoodsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFoodsInput, Prisma.UserUncheckedUpdateWithoutFoodsInput>
+}
+
+export type UserUpdateWithoutFoodsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  workoutPlans?: Prisma.WorkoutPlanUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.WorkoutSessionUpdateManyWithoutUserNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFoodsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  workoutPlans?: Prisma.WorkoutPlanUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.WorkoutSessionUncheckedUpdateManyWithoutUserNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMealLogsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  workoutPlans?: Prisma.WorkoutPlanCreateNestedManyWithoutUserInput
+  sessions?: Prisma.WorkoutSessionCreateNestedManyWithoutUserInput
+  recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMealLogsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  workoutPlans?: Prisma.WorkoutPlanUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.WorkoutSessionUncheckedCreateNestedManyWithoutUserInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMealLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMealLogsInput, Prisma.UserUncheckedCreateWithoutMealLogsInput>
+}
+
+export type UserUpsertWithoutMealLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMealLogsInput, Prisma.UserUncheckedUpdateWithoutMealLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMealLogsInput, Prisma.UserUncheckedCreateWithoutMealLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMealLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMealLogsInput, Prisma.UserUncheckedUpdateWithoutMealLogsInput>
+}
+
+export type UserUpdateWithoutMealLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  workoutPlans?: Prisma.WorkoutPlanUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.WorkoutSessionUpdateManyWithoutUserNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMealLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  workoutPlans?: Prisma.WorkoutPlanUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.WorkoutSessionUncheckedUpdateManyWithoutUserNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWeightLogsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  workoutPlans?: Prisma.WorkoutPlanCreateNestedManyWithoutUserInput
+  sessions?: Prisma.WorkoutSessionCreateNestedManyWithoutUserInput
+  recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutWeightLogsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  workoutPlans?: Prisma.WorkoutPlanUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.WorkoutSessionUncheckedCreateNestedManyWithoutUserInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutWeightLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWeightLogsInput, Prisma.UserUncheckedCreateWithoutWeightLogsInput>
+}
+
+export type UserUpsertWithoutWeightLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWeightLogsInput, Prisma.UserUncheckedUpdateWithoutWeightLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWeightLogsInput, Prisma.UserUncheckedCreateWithoutWeightLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWeightLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWeightLogsInput, Prisma.UserUncheckedUpdateWithoutWeightLogsInput>
+}
+
+export type UserUpdateWithoutWeightLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  workoutPlans?: Prisma.WorkoutPlanUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.WorkoutSessionUpdateManyWithoutUserNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWeightLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  workoutPlans?: Prisma.WorkoutPlanUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.WorkoutSessionUncheckedUpdateManyWithoutUserNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  nutritionGoal?: Prisma.NutritionGoalUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutNutritionGoalInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  workoutPlans?: Prisma.WorkoutPlanCreateNestedManyWithoutUserInput
+  sessions?: Prisma.WorkoutSessionCreateNestedManyWithoutUserInput
+  recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  exercises?: Prisma.ExerciseCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutNutritionGoalInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  workoutPlans?: Prisma.WorkoutPlanUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.WorkoutSessionUncheckedCreateNestedManyWithoutUserInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  exercises?: Prisma.ExerciseUncheckedCreateNestedManyWithoutUserInput
+  foods?: Prisma.FoodUncheckedCreateNestedManyWithoutUserInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutUserInput
+  weightLogs?: Prisma.WeightLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNutritionGoalInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNutritionGoalInput, Prisma.UserUncheckedCreateWithoutNutritionGoalInput>
+}
+
+export type UserUpsertWithoutNutritionGoalInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNutritionGoalInput, Prisma.UserUncheckedUpdateWithoutNutritionGoalInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNutritionGoalInput, Prisma.UserUncheckedCreateWithoutNutritionGoalInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNutritionGoalInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNutritionGoalInput, Prisma.UserUncheckedUpdateWithoutNutritionGoalInput>
+}
+
+export type UserUpdateWithoutNutritionGoalInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  workoutPlans?: Prisma.WorkoutPlanUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.WorkoutSessionUpdateManyWithoutUserNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  exercises?: Prisma.ExerciseUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNutritionGoalInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  workoutPlans?: Prisma.WorkoutPlanUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.WorkoutSessionUncheckedUpdateManyWithoutUserNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  exercises?: Prisma.ExerciseUncheckedUpdateManyWithoutUserNestedInput
+  foods?: Prisma.FoodUncheckedUpdateManyWithoutUserNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutUserNestedInput
+  weightLogs?: Prisma.WeightLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1045,6 +1611,9 @@ export type UserCountOutputType = {
   recurringTransactions: number
   tasks: number
   exercises: number
+  foods: number
+  mealLogs: number
+  weightLogs: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1055,6 +1624,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   recurringTransactions?: boolean | UserCountOutputTypeCountRecurringTransactionsArgs
   tasks?: boolean | UserCountOutputTypeCountTasksArgs
   exercises?: boolean | UserCountOutputTypeCountExercisesArgs
+  foods?: boolean | UserCountOutputTypeCountFoodsArgs
+  mealLogs?: boolean | UserCountOutputTypeCountMealLogsArgs
+  weightLogs?: boolean | UserCountOutputTypeCountWeightLogsArgs
 }
 
 /**
@@ -1116,6 +1688,27 @@ export type UserCountOutputTypeCountExercisesArgs<ExtArgs extends runtime.Types.
   where?: Prisma.ExerciseWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFoodsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FoodWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMealLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MealLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWeightLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WeightLogWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1131,6 +1724,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   recurringTransactions?: boolean | Prisma.User$recurringTransactionsArgs<ExtArgs>
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   exercises?: boolean | Prisma.User$exercisesArgs<ExtArgs>
+  foods?: boolean | Prisma.User$foodsArgs<ExtArgs>
+  mealLogs?: boolean | Prisma.User$mealLogsArgs<ExtArgs>
+  weightLogs?: boolean | Prisma.User$weightLogsArgs<ExtArgs>
+  nutritionGoal?: boolean | Prisma.User$nutritionGoalArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1170,6 +1767,10 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   recurringTransactions?: boolean | Prisma.User$recurringTransactionsArgs<ExtArgs>
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   exercises?: boolean | Prisma.User$exercisesArgs<ExtArgs>
+  foods?: boolean | Prisma.User$foodsArgs<ExtArgs>
+  mealLogs?: boolean | Prisma.User$mealLogsArgs<ExtArgs>
+  weightLogs?: boolean | Prisma.User$weightLogsArgs<ExtArgs>
+  nutritionGoal?: boolean | Prisma.User$nutritionGoalArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1185,6 +1786,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     recurringTransactions: Prisma.$RecurringTransactionPayload<ExtArgs>[]
     tasks: Prisma.$TaskPayload<ExtArgs>[]
     exercises: Prisma.$ExercisePayload<ExtArgs>[]
+    foods: Prisma.$FoodPayload<ExtArgs>[]
+    mealLogs: Prisma.$MealLogPayload<ExtArgs>[]
+    weightLogs: Prisma.$WeightLogPayload<ExtArgs>[]
+    nutritionGoal: Prisma.$NutritionGoalPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1594,6 +2199,10 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   recurringTransactions<T extends Prisma.User$recurringTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recurringTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecurringTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasks<T extends Prisma.User$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   exercises<T extends Prisma.User$exercisesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$exercisesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  foods<T extends Prisma.User$foodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$foodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FoodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mealLogs<T extends Prisma.User$mealLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mealLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MealLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  weightLogs<T extends Prisma.User$weightLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$weightLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeightLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  nutritionGoal<T extends Prisma.User$nutritionGoalArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$nutritionGoalArgs<ExtArgs>>): Prisma.Prisma__NutritionGoalClient<runtime.Types.Result.GetResult<Prisma.$NutritionGoalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2187,6 +2796,97 @@ export type User$exercisesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.ExerciseScalarFieldEnum | Prisma.ExerciseScalarFieldEnum[]
+}
+
+/**
+ * User.foods
+ */
+export type User$foodsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Food
+   */
+  select?: Prisma.FoodSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Food
+   */
+  omit?: Prisma.FoodOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FoodInclude<ExtArgs> | null
+  where?: Prisma.FoodWhereInput
+  orderBy?: Prisma.FoodOrderByWithRelationInput | Prisma.FoodOrderByWithRelationInput[]
+  cursor?: Prisma.FoodWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FoodScalarFieldEnum | Prisma.FoodScalarFieldEnum[]
+}
+
+/**
+ * User.mealLogs
+ */
+export type User$mealLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MealLog
+   */
+  select?: Prisma.MealLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MealLog
+   */
+  omit?: Prisma.MealLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MealLogInclude<ExtArgs> | null
+  where?: Prisma.MealLogWhereInput
+  orderBy?: Prisma.MealLogOrderByWithRelationInput | Prisma.MealLogOrderByWithRelationInput[]
+  cursor?: Prisma.MealLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MealLogScalarFieldEnum | Prisma.MealLogScalarFieldEnum[]
+}
+
+/**
+ * User.weightLogs
+ */
+export type User$weightLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WeightLog
+   */
+  select?: Prisma.WeightLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WeightLog
+   */
+  omit?: Prisma.WeightLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WeightLogInclude<ExtArgs> | null
+  where?: Prisma.WeightLogWhereInput
+  orderBy?: Prisma.WeightLogOrderByWithRelationInput | Prisma.WeightLogOrderByWithRelationInput[]
+  cursor?: Prisma.WeightLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WeightLogScalarFieldEnum | Prisma.WeightLogScalarFieldEnum[]
+}
+
+/**
+ * User.nutritionGoal
+ */
+export type User$nutritionGoalArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NutritionGoal
+   */
+  select?: Prisma.NutritionGoalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NutritionGoal
+   */
+  omit?: Prisma.NutritionGoalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NutritionGoalInclude<ExtArgs> | null
+  where?: Prisma.NutritionGoalWhereInput
 }
 
 /**

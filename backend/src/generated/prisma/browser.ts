@@ -67,3 +67,28 @@ export type SetLog = Prisma.SetLogModel
  * 
  */
 export type Task = Prisma.TaskModel
+/**
+ * Model Food
+ * 
+ */
+export type Food = Prisma.FoodModel
+/**
+ * Model MealLog
+ * 
+ */
+export type MealLog = Prisma.MealLogModel
+/**
+ * Model MealFoodItem
+ * 
+ */
+export type MealFoodItem = Prisma.MealFoodItemModel
+/**
+ * Model WeightLog
+ * 
+ */
+export type WeightLog = Prisma.WeightLogModel
+/**
+ * Model NutritionGoal
+ * 
+ */
+export type NutritionGoal = Prisma.NutritionGoalModel
