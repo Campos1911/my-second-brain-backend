@@ -14,6 +14,7 @@ import { WorkoutSessionsModule } from './modules/workout-sessions/workout-sessio
 import { ExercisesModule } from './modules/exercises/exercises.module';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { FoodsModule } from './modules/foods/foods.module';
+import { MealLogsModule } from './modules/meal-logs/meal-logs.module';
 import { validate } from './common/config/env.validation';
 
 @Module({
@@ -40,6 +41,7 @@ import { validate } from './common/config/env.validation';
     ExercisesModule,
     TasksModule,
     FoodsModule,
+    MealLogsModule,
   ],
   controllers: [],
   providers: [
