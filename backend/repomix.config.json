@@ -8,7 +8,15 @@
     "parsableStyle": false,
     "fileSummary": false
   },
-  "include": ["**/*"],
+  "include": [
+    "src/common/**",
+    "src/modules/nutrition-goals/**",
+    "src/prisma/**",
+    "src/main.ts",
+    "src/app.module.ts",
+    "prisma/schema.prisma",
+    "prisma/seed.ts"
+  ],
   "ignore": {
     "useGitignore": true,
     "useDefaultPatterns": true,
