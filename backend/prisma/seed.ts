@@ -1,54 +1,64 @@
 import { PrismaPg } from '@prisma/adapter-pg';
-
+import { Pool } from 'pg';
 import {
   PrismaClient,
   CategoryType,
   PaymentMethod,
   RecurrenceFrequency,
+  ServingUnit,
+  MealType,
+  TaskPriority,
+  TaskStatus,
+  Prisma,
 } from '../src/generated/prisma/client';
-
 import * as bcrypt from 'bcrypt';
 
-const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
-});
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log('🔄 Iniciando limpeza do banco de dados...');
-
-  // 1. Limpeza em cascata controlada
+  console.log('🔄 Iniciando limpeza completa do banco de dados...');
+  
+  // Limpeza em cascata respeitando integridade referencial
+  await prisma.mealFoodItem.deleteMany();
+  await prisma.mealLog.deleteMany();
+  await prisma.weightLog.deleteMany();
+  await prisma.nutritionGoal.deleteMany();
+  await prisma.food.deleteMany();
+  await prisma.task.deleteMany();
   await prisma.setLog.deleteMany();
   await prisma.workoutSession.deleteMany();
-  await prisma.workoutPlanExercise.deleteMany(); // <-- Novo: Limpa tabela intermediária
+  await prisma.workoutPlanExercise.deleteMany();
   await prisma.exercise.deleteMany();
   await prisma.workoutPlan.deleteMany();
   await prisma.transaction.deleteMany();
   await prisma.recurringTransaction.deleteMany();
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
-
   console.log('✅ Banco de dados limpo com sucesso.');
 
-  // 2. Criação do Usuário de Demonstração
+  // ==========================================
+  // 1. USUÁRIO DEMO
+  // ==========================================
   console.log('👤 Criando usuário de demonstração...');
   const saltRounds = 12;
   const passwordHash = await bcrypt.hash('senhaSegura123', saltRounds);
-
   const demoUser = await prisma.user.create({
     data: {
       email: 'demo@secondbrain.com',
       passwordHash,
     },
   });
-
   const userId = demoUser.id;
   console.log(
     `👤 Usuário criado com ID: ${userId} (Login: demo@secondbrain.com / Senha: senhaSegura123)`,
   );
 
-  // 3. Criação de Categorias Financeiras e Fitness
+  // ==========================================
+  // 2. CATEGORIAS PADRÃO
+  // ==========================================
   console.log('📂 Criando categorias padronizadas...');
-
   const catSalario = await prisma.category.create({
     data: { name: 'Salário', type: CategoryType.INCOME, userId },
   });
@@ -82,8 +92,6 @@ async function main() {
       userId,
     },
   });
-
-  // Categorias Fitness
   const catPeito = await prisma.category.create({
     data: { name: 'Peito', type: CategoryType.FITNESS, userId },
   });
@@ -96,13 +104,13 @@ async function main() {
   const catMembrosSuperiores = await prisma.category.create({
     data: { name: 'Braços & Ombros', type: CategoryType.FITNESS, userId },
   });
-
   console.log('✅ Categorias criadas.');
 
-  // 4. Criação de Transações Recorrentes
+  // ==========================================
+  // 3. FINANCEIRO (RECORRÊNCIAS E TRANSAÇÕES)
+  // ==========================================
   console.log('🔄 Criando agendamentos recorrentes...');
   const hoje = new Date();
-
   const recNetflix = await prisma.recurringTransaction.create({
     data: {
       amount: 55.9,
@@ -116,7 +124,6 @@ async function main() {
       categoryId: catAssinatura.id,
     },
   });
-
   const recAcademia = await prisma.recurringTransaction.create({
     data: {
       amount: 119.9,
@@ -131,13 +138,9 @@ async function main() {
     },
   });
 
-  console.log('✅ Recorrências salvas.');
-
-  // 5. Histórico de Transações Manuais
   console.log('💰 Populando histórico de transações financeiras...');
   const anoAtual = hoje.getFullYear();
   const mesAtual = hoje.getMonth();
-
   const transacoesMocks = [
     {
       description: 'Salário Mensal',
@@ -153,7 +156,6 @@ async function main() {
       categoryId: catAluguel.id,
       paymentMethod: PaymentMethod.DEBIT,
     },
-    // Transações geradas das recorrências
     {
       description: '[Recorrente] Assinatura Streaming (Netflix)',
       amount: 55.9,
@@ -186,31 +188,17 @@ async function main() {
     });
   }
 
-  console.log('✅ Histórico financeiro populado.');
-
-  // 6. Fichas de Treino (Workout Plans)
-  console.log('🏋️ Criando fichas de treino...');
-
+  // ==========================================
+  // 4. WORKOUT (FICHAS, EXERCÍCIOS E SESSÕES)
+  // ==========================================
+  console.log('🏋️ Criando fichas e biblioteca de exercícios...');
   const planoA = await prisma.workoutPlan.create({
-    data: {
-      name: 'Treino A - Peito & Tríceps',
-      userId,
-    },
+    data: { name: 'Treino A - Peito & Tríceps', userId },
   });
-
   const planoB = await prisma.workoutPlan.create({
-    data: {
-      name: 'Treino B - Costas & Bíceps',
-      userId,
-    },
+    data: { name: 'Treino B - Costas & Bíceps', userId },
   });
 
-  console.log('✅ Fichas criadas.');
-
-  // 7. Exercícios Cadastrados de Forma Independente na Biblioteca
-  console.log('💪 Cadastrando biblioteca de exercícios...');
-
-  // Exercícios criados na biblioteca do usuário
   const exSupino = await prisma.exercise.create({
     data: { name: 'Supino Reto com Barra', categoryId: catPeito.id, userId },
   });
@@ -224,7 +212,6 @@ async function main() {
       userId,
     },
   });
-
   const exPuxadaAlta = await prisma.exercise.create({
     data: { name: 'Puxada Alta Pronada', categoryId: catCostas.id, userId },
   });
@@ -239,103 +226,441 @@ async function main() {
     },
   });
 
-  console.log('🔗 Criando vínculos Many-to-Many entre planos e exercícios...');
   await prisma.workoutPlanExercise.createMany({
     data: [
-      {
-        workoutPlanId: planoA.id,
-        exerciseId: exSupino.id,
-        targetSets: 4,
-        targetMinReps: 8,
-        targetMaxReps: 12,
-      },
-      {
-        workoutPlanId: planoA.id,
-        exerciseId: exCrossOver.id,
-        targetSets: 3,
-        targetMinReps: 10,
-        targetMaxReps: 12,
-      },
-      {
-        workoutPlanId: planoA.id,
-        exerciseId: exTricepsPulley.id,
-        targetSets: 3,
-        targetMinReps: 12,
-        targetMaxReps: 15,
-      },
-      {
-        workoutPlanId: planoB.id,
-        exerciseId: exPuxadaAlta.id,
-        targetSets: 4,
-        targetMinReps: 8,
-        targetMaxReps: 12,
-      },
-      {
-        workoutPlanId: planoB.id,
-        exerciseId: exRemadaBaixa.id,
-        targetSets: 3,
-        targetMinReps: 10,
-        targetMaxReps: 12,
-      },
-      {
-        workoutPlanId: planoB.id,
-        exerciseId: exRoscaDireta.id,
-        targetSets: 3,
-        targetMinReps: 10,
-        targetMaxReps: 12,
-      },
+      { workoutPlanId: planoA.id, exerciseId: exSupino.id, targetSets: 4, targetMinReps: 8, targetMaxReps: 12 },
+      { workoutPlanId: planoA.id, exerciseId: exCrossOver.id, targetSets: 3, targetMinReps: 10, targetMaxReps: 12 },
+      { workoutPlanId: planoA.id, exerciseId: exTricepsPulley.id, targetSets: 3, targetMinReps: 12, targetMaxReps: 15 },
+      { workoutPlanId: planoB.id, exerciseId: exPuxadaAlta.id, targetSets: 4, targetMinReps: 8, targetMaxReps: 12 },
+      { workoutPlanId: planoB.id, exerciseId: exRemadaBaixa.id, targetSets: 3, targetMinReps: 10, targetMaxReps: 12 },
+      { workoutPlanId: planoB.id, exerciseId: exRoscaDireta.id, targetSets: 3, targetMinReps: 10, targetMaxReps: 12 },
     ],
   });
-
-  console.log('✅ Exercícios inseridos e vinculados aos planos.');
-
-  // 8. Histórico de Sessões Concluídas + Histórico de Cargas (SetLogs)
-  console.log('📈 Criando histórico de sessões e progressão de cargas...');
 
   const sessao1 = await prisma.workoutSession.create({
     data: {
       workoutPlanId: planoA.id,
       userId,
-      startedAt: new Date(anoAtual, mesAtual, hoje.getDate() - 10, 18, 0, 0),
-      finishedAt: new Date(anoAtual, mesAtual, hoje.getDate() - 10, 19, 5, 0),
+      startedAt: new Date(anoAtual, mesAtual, hoje.getDate() - 2, 18, 0, 0),
+      finishedAt: new Date(anoAtual, mesAtual, hoje.getDate() - 2, 19, 5, 0),
     },
   });
 
   await prisma.setLog.createMany({
     data: [
+      { workoutSessionId: sessao1.id, exerciseId: exSupino.id, reps: 12, weight: 50.0, toFailure: false },
+      { workoutSessionId: sessao1.id, exerciseId: exSupino.id, reps: 10, weight: 60.0, toFailure: true },
+      { workoutSessionId: sessao1.id, exerciseId: exCrossOver.id, reps: 12, weight: 15.0, toFailure: false },
+      { workoutSessionId: sessao1.id, exerciseId: exTricepsPulley.id, reps: 15, weight: 20.0, toFailure: false },
+    ],
+  });
+
+  // ==========================================
+  // 5. TAREFAS (TASKS)
+  // ==========================================
+  console.log('📋 Cadastrando tarefas de demonstração...');
+  await prisma.task.createMany({
+    data: [
       {
-        workoutSessionId: sessao1.id,
-        exerciseId: exSupino.id,
-        reps: 12,
-        weight: 50.0,
-        toFailure: false,
+        title: 'Preparar marmitas da semana',
+        description: 'Cozinhar frango, arroz e legumes para as refeições de segunda a sexta',
+        priority: TaskPriority.HIGH,
+        status: TaskStatus.DONE,
+        userId,
       },
       {
-        workoutSessionId: sessao1.id,
-        exerciseId: exSupino.id,
-        reps: 10,
-        weight: 60.0,
-        toFailure: true,
+        title: 'Revisar plano de treino de hipertrofia',
+        description: 'Ajustar volume de séries e progressão de cargas para o próximo ciclo',
+        priority: TaskPriority.MEDIUM,
+        status: TaskStatus.IN_PROGRESS,
+        userId,
       },
       {
-        workoutSessionId: sessao1.id,
-        exerciseId: exCrossOver.id,
-        reps: 12,
-        weight: 15.0,
-        toFailure: false,
-      },
-      {
-        workoutSessionId: sessao1.id,
-        exerciseId: exTricepsPulley.id,
-        reps: 15,
-        weight: 20.0,
-        toFailure: false,
+        title: 'Realizar pesagem em jejum aos sábados',
+        description: 'Registrar peso matinal e atualizar estatísticas no painel',
+        priority: TaskPriority.LOW,
+        status: TaskStatus.TODO,
+        userId,
       },
     ],
   });
 
-  console.log('✅ Histórico de treinos e logs de séries estruturados.');
-  console.log('🚀 Seed completo. Sistema pronto para uso.');
+  // ==========================================
+  // 6. NUTRIÇÃO - ALIMENTOS GLOBAIS (PUBLICOS)
+  // ==========================================
+  console.log('🥗 Cadastrando biblioteca de alimentos globais...');
+  const foodFrango = await prisma.food.create({
+    data: {
+      name: 'Peito de Frango Grelhado',
+      brand: 'Sadia',
+      servingSize: 100,
+      servingUnit: ServingUnit.GRAM,
+      calories: 165.0,
+      protein: 31.0,
+      carbs: 0.0,
+      fat: 3.6,
+      fiber: 0.0,
+      userId: null,
+    },
+  });
+
+  const foodArroz = await prisma.food.create({
+    data: {
+      name: 'Arroz Branco Cozido',
+      brand: 'Tio João',
+      servingSize: 100,
+      servingUnit: ServingUnit.GRAM,
+      calories: 130.0,
+      protein: 2.5,
+      carbs: 28.2,
+      fat: 0.3,
+      fiber: 0.4,
+      userId: null,
+    },
+  });
+
+  const foodOvo = await prisma.food.create({
+    data: {
+      name: 'Ovo de Galinha Cozido',
+      brand: 'Mantiqueira',
+      servingSize: 50,
+      servingUnit: ServingUnit.UNIT,
+      calories: 72.0,
+      protein: 6.3,
+      carbs: 0.4,
+      fat: 4.8,
+      fiber: 0.0,
+      userId: null,
+    },
+  });
+
+  const foodBanana = await prisma.food.create({
+    data: {
+      name: 'Banana Prata',
+      brand: null,
+      servingSize: 100,
+      servingUnit: ServingUnit.UNIT,
+      calories: 89.0,
+      protein: 1.1,
+      carbs: 22.8,
+      fat: 0.3,
+      fiber: 2.6,
+      userId: null,
+    },
+  });
+
+  const foodAveia = await prisma.food.create({
+    data: {
+      name: 'Aveia em Flocos Finos',
+      brand: 'Quaker',
+      servingSize: 30,
+      servingUnit: ServingUnit.GRAM,
+      calories: 118.0,
+      protein: 4.2,
+      carbs: 20.0,
+      fat: 2.6,
+      fiber: 2.7,
+      userId: null,
+    },
+  });
+
+  const foodAzeite = await prisma.food.create({
+    data: {
+      name: 'Azeite de Oliva Extra Virgem',
+      brand: 'Gallo',
+      servingSize: 13,
+      servingUnit: ServingUnit.TABLESPOON,
+      calories: 108.0,
+      protein: 0.0,
+      carbs: 0.0,
+      fat: 12.0,
+      fiber: 0.0,
+      userId: null,
+    },
+  });
+
+  const foodWhey = await prisma.food.create({
+    data: {
+      name: '100% Whey Protein Concentrado',
+      brand: 'Growth Supplements',
+      servingSize: 30,
+      servingUnit: ServingUnit.SCOOP,
+      calories: 120.0,
+      protein: 24.0,
+      carbs: 3.0,
+      fat: 1.5,
+      fiber: 0.0,
+      userId: null,
+    },
+  });
+
+  const foodFeijao = await prisma.food.create({
+    data: {
+      name: 'Feijão Preto Cozido',
+      brand: 'Camil',
+      servingSize: 100,
+      servingUnit: ServingUnit.GRAM,
+      calories: 77.0,
+      protein: 4.5,
+      carbs: 14.0,
+      fat: 0.5,
+      fiber: 4.4,
+      userId: null,
+    },
+  });
+
+  const foodMaca = await prisma.food.create({
+    data: {
+      name: 'Maçã Fuji Fresca',
+      brand: null,
+      servingSize: 100,
+      servingUnit: ServingUnit.UNIT,
+      calories: 52.0,
+      protein: 0.3,
+      carbs: 13.8,
+      fat: 0.2,
+      fiber: 2.4,
+      userId: null,
+    },
+  });
+
+  const foodPaoIntegral = await prisma.food.create({
+    data: {
+      name: 'Pão 100% Integral Tradicional',
+      brand: 'Wickbold',
+      servingSize: 50,
+      servingUnit: ServingUnit.UNIT,
+      calories: 120.0,
+      protein: 4.5,
+      carbs: 22.0,
+      fat: 1.5,
+      fiber: 3.5,
+      userId: null,
+    },
+  });
+
+  const foodPatinho = await prisma.food.create({
+    data: {
+      name: 'Patinho Moído Grelhado',
+      brand: 'Friboi',
+      servingSize: 100,
+      servingUnit: ServingUnit.GRAM,
+      calories: 219.0,
+      protein: 35.9,
+      carbs: 0.0,
+      fat: 7.3,
+      fiber: 0.0,
+      userId: null,
+    },
+  });
+
+  const foodBatataDoce = await prisma.food.create({
+    data: {
+      name: 'Batata Doce Cozida',
+      brand: null,
+      servingSize: 100,
+      servingUnit: ServingUnit.GRAM,
+      calories: 86.0,
+      protein: 1.6,
+      carbs: 20.1,
+      fat: 0.1,
+      fiber: 3.0,
+      userId: null,
+    },
+  });
+  console.log('✅ 12 alimentos globais cadastrados com sucesso.');
+
+  // ==========================================
+  // 7. NUTRIÇÃO - META NUTRICIONAL (NUTRITION GOAL)
+  // ==========================================
+  console.log('🎯 Configurando meta nutricional para o usuário demo...');
+  await prisma.nutritionGoal.create({
+    data: {
+      userId,
+      targetCalories: 2000.0,
+      targetProtein: 160.0,
+      targetCarbs: 220.0,
+      targetFat: 60.0,
+      targetFiber: 28.0,
+      targetWeight: 75.0,
+    },
+  });
+  console.log('✅ Meta nutricional registrada (2000 kcal | 160g P | 220g C | 60g G | 75.0 kg alvo).');
+
+  // ==========================================
+  // 8. NUTRIÇÃO - HISTÓRICO DE 30 DIAS DE PESAGEM
+  // ==========================================
+  console.log('⚖️ Gerando histórico de 30 dias de pesagens com evolução gradual...');
+  const weightLogsData: Prisma.WeightLogCreateManyInput[] = [];
+  const baseWeight = 81.5; // Peso há 30 dias
+
+  for (let i = 29; i >= 0; i--) {
+    const logDate = new Date(hoje);
+    logDate.setDate(hoje.getDate() - i);
+    logDate.setHours(7, 30, 0, 0);
+
+    // Tendência linear de 81.5 kg -> 78.0 kg com oscilações reais (+- 0.2 kg)
+    const progress = (29 - i) / 29;
+    const trendWeight = baseWeight - progress * 3.5;
+    const fluctuation = (((i * 7) % 5) - 2) * 0.08;
+    const dayWeight = Math.round((trendWeight + fluctuation) * 100) / 100;
+
+    let notes: string | null = null;
+    if (i === 29) notes = 'Início do acompanhamento e novo protocolo';
+    if (i === 15) notes = 'Pesagem quinzenal após reajuste calórico';
+    if (i === 0) notes = 'Pesagem matinal em jejum';
+
+    weightLogsData.push({
+      userId,
+      weight: dayWeight,
+      date: logDate,
+      notes,
+    });
+  }
+
+  await prisma.weightLog.createMany({
+    data: weightLogsData,
+  });
+  console.log('✅ 30 registros de pesagem gerados com sucesso.');
+
+  // ==========================================
+  // 9. NUTRIÇÃO - REFEIÇÕES DO DIA ATUAL
+  // ==========================================
+  console.log('🍽️ Registrando refeições diárias e snapshots calculados...');
+  const todayOnlyDate = new Date(
+    Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()),
+  );
+
+  // Refeição 1: Café da Manhã (BREAKFAST)
+  const breakfast = await prisma.mealLog.create({
+    data: {
+      userId,
+      date: todayOnlyDate,
+      mealType: MealType.BREAKFAST,
+      notes: 'Café da manhã reforçado pré-treino',
+    },
+  });
+
+  // Ovos (2 unidades = 100g -> fator 2.0 em relação a 50g)
+  const ovoFactor = 100 / 50;
+  // Pão Integral (1 unidade = 50g -> fator 1.0 em relação a 50g)
+  const paoFactor = 50 / 50;
+  // Banana Prata (1 unidade = 100g -> fator 1.0 em relação a 100g)
+  const bananaFactor = 100 / 100;
+  // Whey Protein (1 scoop = 30g -> fator 1.0 em relação a 30g)
+  const wheyFactor = 30 / 30;
+
+  await prisma.mealFoodItem.createMany({
+    data: [
+      {
+        mealLogId: breakfast.id,
+        foodId: foodOvo.id,
+        quantity: 100.0,
+        consumedCalories: Number(foodOvo.calories) * ovoFactor,
+        consumedProtein: Number(foodOvo.protein) * ovoFactor,
+        consumedCarbs: Number(foodOvo.carbs) * ovoFactor,
+        consumedFat: Number(foodOvo.fat) * ovoFactor,
+        consumedFiber: Number(foodOvo.fiber || 0) * ovoFactor,
+      },
+      {
+        mealLogId: breakfast.id,
+        foodId: foodPaoIntegral.id,
+        quantity: 50.0,
+        consumedCalories: Number(foodPaoIntegral.calories) * paoFactor,
+        consumedProtein: Number(foodPaoIntegral.protein) * paoFactor,
+        consumedCarbs: Number(foodPaoIntegral.carbs) * paoFactor,
+        consumedFat: Number(foodPaoIntegral.fat) * paoFactor,
+        consumedFiber: Number(foodPaoIntegral.fiber || 0) * paoFactor,
+      },
+      {
+        mealLogId: breakfast.id,
+        foodId: foodBanana.id,
+        quantity: 100.0,
+        consumedCalories: Number(foodBanana.calories) * bananaFactor,
+        consumedProtein: Number(foodBanana.protein) * bananaFactor,
+        consumedCarbs: Number(foodBanana.carbs) * bananaFactor,
+        consumedFat: Number(foodBanana.fat) * bananaFactor,
+        consumedFiber: Number(foodBanana.fiber || 0) * bananaFactor,
+      },
+      {
+        mealLogId: breakfast.id,
+        foodId: foodWhey.id,
+        quantity: 30.0,
+        consumedCalories: Number(foodWhey.calories) * wheyFactor,
+        consumedProtein: Number(foodWhey.protein) * wheyFactor,
+        consumedCarbs: Number(foodWhey.carbs) * wheyFactor,
+        consumedFat: Number(foodWhey.fat) * wheyFactor,
+        consumedFiber: Number(foodWhey.fiber || 0) * wheyFactor,
+      },
+    ],
+  });
+
+  // Refeição 2: Almoço (LUNCH)
+  const lunch = await prisma.mealLog.create({
+    data: {
+      userId,
+      date: todayOnlyDate,
+      mealType: MealType.LUNCH,
+      notes: 'Almoço equilibrado pós-treino',
+    },
+  });
+
+  // Peito de Frango (180g -> fator 1.8)
+  const frangoFactor = 180 / 100;
+  // Arroz Branco (150g -> fator 1.5)
+  const arrozFactor = 150 / 100;
+  // Feijão Preto (100g -> fator 1.0)
+  const feijaoFactor = 100 / 100;
+  // Azeite de Oliva (13g/ml -> fator 1.0)
+  const azeiteFactor = 13 / 13;
+
+  await prisma.mealFoodItem.createMany({
+    data: [
+      {
+        mealLogId: lunch.id,
+        foodId: foodFrango.id,
+        quantity: 180.0,
+        consumedCalories: Number(foodFrango.calories) * frangoFactor,
+        consumedProtein: Number(foodFrango.protein) * frangoFactor,
+        consumedCarbs: Number(foodFrango.carbs) * frangoFactor,
+        consumedFat: Number(foodFrango.fat) * frangoFactor,
+        consumedFiber: Number(foodFrango.fiber || 0) * frangoFactor,
+      },
+      {
+        mealLogId: lunch.id,
+        foodId: foodArroz.id,
+        quantity: 150.0,
+        consumedCalories: Number(foodArroz.calories) * arrozFactor,
+        consumedProtein: Number(foodArroz.protein) * arrozFactor,
+        consumedCarbs: Number(foodArroz.carbs) * arrozFactor,
+        consumedFat: Number(foodArroz.fat) * arrozFactor,
+        consumedFiber: Number(foodArroz.fiber || 0) * arrozFactor,
+      },
+      {
+        mealLogId: lunch.id,
+        foodId: foodFeijao.id,
+        quantity: 100.0,
+        consumedCalories: Number(foodFeijao.calories) * feijaoFactor,
+        consumedProtein: Number(foodFeijao.protein) * feijaoFactor,
+        consumedCarbs: Number(foodFeijao.carbs) * feijaoFactor,
+        consumedFat: Number(foodFeijao.fat) * feijaoFactor,
+        consumedFiber: Number(foodFeijao.fiber || 0) * feijaoFactor,
+      },
+      {
+        mealLogId: lunch.id,
+        foodId: foodAzeite.id,
+        quantity: 13.0,
+        consumedCalories: Number(foodAzeite.calories) * azeiteFactor,
+        consumedProtein: Number(foodAzeite.protein) * azeiteFactor,
+        consumedCarbs: Number(foodAzeite.carbs) * azeiteFactor,
+        consumedFat: Number(foodAzeite.fat) * azeiteFactor,
+        consumedFiber: Number(foodAzeite.fiber || 0) * azeiteFactor,
+      },
+    ],
+  });
+
+  console.log('✅ Refeições e snapshots nutricionais gravados com sucesso.');
+  console.log('\n🚀 Seeding completo. Todos os módulos estão populados e prontos!');
 }
 
 main()
@@ -345,4 +670,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    await pool.end();
   });
