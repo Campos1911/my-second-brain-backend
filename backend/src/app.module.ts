@@ -17,6 +17,7 @@ import { FoodsModule } from './modules/foods/foods.module';
 import { MealLogsModule } from './modules/meal-logs/meal-logs.module';
 import { WeightLogsModule } from './modules/weight-logs/weight-logs.module';
 import { NutritionGoalsModule } from './modules/nutrition-goals/nutrition-goals.module';
+import { WeightGoalsModule } from './modules/weight-goals/weight-goals.module';
 import { validate } from './common/config/env.validation';
 
 @Module({
@@ -46,6 +47,7 @@ import { validate } from './common/config/env.validation';
     MealLogsModule,
     WeightLogsModule,
     NutritionGoalsModule,
+    WeightGoalsModule,
   ],
   controllers: [],
   providers: [
