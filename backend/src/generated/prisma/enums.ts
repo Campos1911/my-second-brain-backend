@@ -98,3 +98,12 @@ export const BiologicalSex = {
 } as const
 
 export type BiologicalSex = (typeof BiologicalSex)[keyof typeof BiologicalSex]
+
+
+export const GoalStatus = {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  ABANDONED: 'ABANDONED'
+} as const
+
+export type GoalStatus = (typeof GoalStatus)[keyof typeof GoalStatus]

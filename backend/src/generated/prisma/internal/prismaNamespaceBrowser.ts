@@ -65,7 +65,8 @@ export const ModelName = {
   MealLog: 'MealLog',
   MealFoodItem: 'MealFoodItem',
   WeightLog: 'WeightLog',
-  NutritionGoal: 'NutritionGoal'
+  NutritionGoal: 'NutritionGoal',
+  WeightGoal: 'WeightGoal'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -296,6 +297,24 @@ export const NutritionGoalScalarFieldEnum = {
 } as const
 
 export type NutritionGoalScalarFieldEnum = (typeof NutritionGoalScalarFieldEnum)[keyof typeof NutritionGoalScalarFieldEnum]
+
+
+export const WeightGoalScalarFieldEnum = {
+  id: 'id',
+  startWeight: 'startWeight',
+  targetWeight: 'targetWeight',
+  startDate: 'startDate',
+  targetDate: 'targetDate',
+  weeklyRateGoal: 'weeklyRateGoal',
+  status: 'status',
+  notes: 'notes',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type WeightGoalScalarFieldEnum = (typeof WeightGoalScalarFieldEnum)[keyof typeof WeightGoalScalarFieldEnum]
 
 
 export const SortOrder = {

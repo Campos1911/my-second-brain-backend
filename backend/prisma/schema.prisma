@@ -28,6 +28,7 @@ model User {
   foods                 Food[]
   mealLogs              MealLog[]
   weightLogs            WeightLog[]
+  weightGoals           WeightGoal[]
   nutritionGoal         NutritionGoal?
 
   @@index([email, deletedAt])
@@ -357,4 +358,35 @@ model NutritionGoal {
   updatedAt      DateTime  @updatedAt
 
   @@index([userId])
+}
+
+
+// ==========================================
+// MODELOS DE METAS DE PESO (WEIGHT GOALS)
+// ==========================================
+
+enum GoalStatus {
+  ACTIVE
+  COMPLETED
+  ABANDONED
+}
+
+model WeightGoal {
+  id             String      @id @default(uuid())
+  startWeight    Decimal     @db.Decimal(6, 2)
+  targetWeight   Decimal     @db.Decimal(6, 2)
+  startDate      DateTime    @default(now())
+  targetDate     DateTime?
+  weeklyRateGoal Decimal?    @db.Decimal(4, 2)
+  status         GoalStatus  @default(ACTIVE)
+  notes          String?
+
+  userId         String
+  user           User        @relation(fields: [userId], references: [id])
+
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  deletedAt      DateTime?
+
+  @@index([userId, status, deletedAt])
 }

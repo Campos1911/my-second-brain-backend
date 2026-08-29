@@ -114,3 +114,8 @@ export type WeightLog = Prisma.WeightLogModel
  * 
  */
 export type NutritionGoal = Prisma.NutritionGoalModel
+/**
+ * Model WeightGoal
+ * 
+ */
+export type WeightGoal = Prisma.WeightGoalModel

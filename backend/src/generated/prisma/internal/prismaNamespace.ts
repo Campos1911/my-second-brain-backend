@@ -398,7 +398,8 @@ export const ModelName = {
   MealLog: 'MealLog',
   MealFoodItem: 'MealFoodItem',
   WeightLog: 'WeightLog',
-  NutritionGoal: 'NutritionGoal'
+  NutritionGoal: 'NutritionGoal',
+  WeightGoal: 'WeightGoal'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "category" | "recurringTransaction" | "transaction" | "workoutPlan" | "exercise" | "workoutPlanExercise" | "workoutSession" | "setLog" | "task" | "food" | "mealLog" | "mealFoodItem" | "weightLog" | "nutritionGoal"
+    modelProps: "user" | "category" | "recurringTransaction" | "transaction" | "workoutPlan" | "exercise" | "workoutPlanExercise" | "workoutSession" | "setLog" | "task" | "food" | "mealLog" | "mealFoodItem" | "weightLog" | "nutritionGoal" | "weightGoal"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1528,6 +1529,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WeightGoal: {
+      payload: Prisma.$WeightGoalPayload<ExtArgs>
+      fields: Prisma.WeightGoalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WeightGoalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WeightGoalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload>
+        }
+        findFirst: {
+          args: Prisma.WeightGoalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WeightGoalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload>
+        }
+        findMany: {
+          args: Prisma.WeightGoalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload>[]
+        }
+        create: {
+          args: Prisma.WeightGoalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload>
+        }
+        createMany: {
+          args: Prisma.WeightGoalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WeightGoalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload>[]
+        }
+        delete: {
+          args: Prisma.WeightGoalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload>
+        }
+        update: {
+          args: Prisma.WeightGoalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload>
+        }
+        deleteMany: {
+          args: Prisma.WeightGoalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WeightGoalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WeightGoalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload>[]
+        }
+        upsert: {
+          args: Prisma.WeightGoalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightGoalPayload>
+        }
+        aggregate: {
+          args: Prisma.WeightGoalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWeightGoal>
+        }
+        groupBy: {
+          args: Prisma.WeightGoalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WeightGoalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WeightGoalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WeightGoalCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1781,6 +1856,24 @@ export const NutritionGoalScalarFieldEnum = {
 export type NutritionGoalScalarFieldEnum = (typeof NutritionGoalScalarFieldEnum)[keyof typeof NutritionGoalScalarFieldEnum]
 
 
+export const WeightGoalScalarFieldEnum = {
+  id: 'id',
+  startWeight: 'startWeight',
+  targetWeight: 'targetWeight',
+  startDate: 'startDate',
+  targetDate: 'targetDate',
+  weeklyRateGoal: 'weeklyRateGoal',
+  status: 'status',
+  notes: 'notes',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type WeightGoalScalarFieldEnum = (typeof WeightGoalScalarFieldEnum)[keyof typeof WeightGoalScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1973,6 +2066,20 @@ export type ListEnumMealTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 
 
 /**
+ * Reference to a field of type 'GoalStatus'
+ */
+export type EnumGoalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GoalStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'GoalStatus[]'
+ */
+export type ListEnumGoalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GoalStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -2110,6 +2217,7 @@ export type GlobalOmitConfig = {
   mealFoodItem?: Prisma.MealFoodItemOmit
   weightLog?: Prisma.WeightLogOmit
   nutritionGoal?: Prisma.NutritionGoalOmit
+  weightGoal?: Prisma.WeightGoalOmit
 }
 
 /* Types for Logging */

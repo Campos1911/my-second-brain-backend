@@ -10,7 +10,7 @@
   },
   "include": [
     "src/common/**",
-    "src/modules/nutrition-goals/**",
+    "src/modules/**",
     "src/prisma/**",
     "src/main.ts",
     "src/app.module.ts",
