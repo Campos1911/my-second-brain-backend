@@ -8,19 +8,20 @@ import request from 'supertest';
 
 describe('AuthController - Rate Limiting (Integração)', () => {
   let app: INestApplication;
-
-  // Mock simplificado do serviço de autenticação para isolar o teste do banco de dados
   const mockAuthService = {
     login: jest.fn().mockResolvedValue({
       access_token: 'mock-jwt-token',
-      user: { id: 'user-uuid', email: 'demo@secondbrain.com' },
+      user: {
+        id: 'user-uuid',
+        email: 'demo@secondbrain.com',
+        name: 'Usuário Demo',
+      },
     }),
   };
 
   beforeAll(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [
-        // Inicializa o Throttler com o mesmo comportamento do AppModule
         ThrottlerModule.forRoot([
           {
             ttl: 60000,
@@ -55,7 +56,6 @@ describe('AuthController - Rate Limiting (Integração)', () => {
       password: 'senhaSegura123',
     };
 
-    // Realiza as primeiras 5 requisições rápidas (dentro do limite configurado)
     for (let i = 0; i < 5; i++) {
       const response = await request(app.getHttpServer())
         .post('/auth/login')
@@ -64,7 +64,6 @@ describe('AuthController - Rate Limiting (Integração)', () => {
       expect(response.status).not.toBe(HttpStatus.TOO_MANY_REQUESTS);
     }
 
-    // A 6ª requisição imediata deve falhar com Too Many Requests (429)
     const blockedResponse = await request(app.getHttpServer())
       .post('/auth/login')
       .send(loginPayload);
