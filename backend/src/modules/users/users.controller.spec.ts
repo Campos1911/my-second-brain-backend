@@ -8,11 +8,10 @@ import request from 'supertest';
 
 describe('UsersController - Rate Limiting (Integração)', () => {
   let app: INestApplication;
-
-  // Mock simplificado do serviço de usuários para isolar o teste do banco de dados
   const mockUsersService = {
     create: jest.fn().mockResolvedValue({
       id: 'new-user-uuid',
+      name: 'Novo Usuário',
       email: 'novo.usuario@email.com',
       createdAt: new Date(),
     }),
@@ -51,20 +50,18 @@ describe('UsersController - Rate Limiting (Integração)', () => {
 
   it('deve permitir ate 5 criacoes de usuarios consecutivas e bloquear a 6ª com 429 Too Many Requests', async () => {
     const createUserPayload = {
+      name: 'Novo Usuário',
       email: 'novo.usuario@email.com',
       password: 'senhaForte123',
     };
 
-    // Realiza as primeiras 5 requisições rápidas
     for (let i = 0; i < 5; i++) {
       const response = await request(app.getHttpServer())
         .post('/users')
         .send(createUserPayload);
-
       expect(response.status).not.toBe(HttpStatus.TOO_MANY_REQUESTS);
     }
 
-    // A 6ª requisição imediata deve falhar com Too Many Requests (429)
     const blockedResponse = await request(app.getHttpServer())
       .post('/users')
       .send(createUserPayload);

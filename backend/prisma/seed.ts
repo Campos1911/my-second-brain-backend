@@ -12,15 +12,11 @@ import {
   Prisma,
 } from '../src/generated/prisma/client';
 import * as bcrypt from 'bcrypt';
-
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
-
 async function main() {
   console.log('🔄 Iniciando limpeza completa do banco de dados...');
-  
-  // Limpeza em cascata respeitando integridade referencial
   await prisma.mealFoodItem.deleteMany();
   await prisma.mealLog.deleteMany();
   await prisma.weightLog.deleteMany();
@@ -37,15 +33,12 @@ async function main() {
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
   console.log('✅ Banco de dados limpo com sucesso.');
-
-  // ==========================================
-  // 1. USUÁRIO DEMO
-  // ==========================================
   console.log('👤 Criando usuário de demonstração...');
   const saltRounds = 12;
   const passwordHash = await bcrypt.hash('senhaSegura123', saltRounds);
   const demoUser = await prisma.user.create({
     data: {
+      name: 'Usuário Demo',
       email: 'demo@secondbrain.com',
       passwordHash,
     },
@@ -54,10 +47,6 @@ async function main() {
   console.log(
     `👤 Usuário criado com ID: ${userId} (Login: demo@secondbrain.com / Senha: senhaSegura123)`,
   );
-
-  // ==========================================
-  // 2. CATEGORIAS PADRÃO
-  // ==========================================
   console.log('📂 Criando categorias padronizadas...');
   const catSalario = await prisma.category.create({
     data: { name: 'Salário', type: CategoryType.INCOME, userId },
@@ -105,10 +94,6 @@ async function main() {
     data: { name: 'Braços & Ombros', type: CategoryType.FITNESS, userId },
   });
   console.log('✅ Categorias criadas.');
-
-  // ==========================================
-  // 3. FINANCEIRO (RECORRÊNCIAS E TRANSAÇÕES)
-  // ==========================================
   console.log('🔄 Criando agendamentos recorrentes...');
   const hoje = new Date();
   const recNetflix = await prisma.recurringTransaction.create({
@@ -137,7 +122,6 @@ async function main() {
       categoryId: catAssinatura.id,
     },
   });
-
   console.log('💰 Populando histórico de transações financeiras...');
   const anoAtual = hoje.getFullYear();
   const mesAtual = hoje.getMonth();
@@ -173,7 +157,6 @@ async function main() {
       recurringTransactionId: recAcademia.id,
     },
   ];
-
   for (const t of transacoesMocks) {
     await prisma.transaction.create({
       data: {
@@ -187,10 +170,6 @@ async function main() {
       },
     });
   }
-
-  // ==========================================
-  // 4. WORKOUT (FICHAS, EXERCÍCIOS E SESSÕES)
-  // ==========================================
   console.log('🏋️ Criando fichas e biblioteca de exercícios...');
   const planoA = await prisma.workoutPlan.create({
     data: { name: 'Treino A - Peito & Tríceps', userId },
@@ -198,7 +177,6 @@ async function main() {
   const planoB = await prisma.workoutPlan.create({
     data: { name: 'Treino B - Costas & Bíceps', userId },
   });
-
   const exSupino = await prisma.exercise.create({
     data: { name: 'Supino Reto com Barra', categoryId: catPeito.id, userId },
   });
@@ -225,7 +203,6 @@ async function main() {
       userId,
     },
   });
-
   await prisma.workoutPlanExercise.createMany({
     data: [
       { workoutPlanId: planoA.id, exerciseId: exSupino.id, targetSets: 4, targetMinReps: 8, targetMaxReps: 12 },
@@ -236,7 +213,6 @@ async function main() {
       { workoutPlanId: planoB.id, exerciseId: exRoscaDireta.id, targetSets: 3, targetMinReps: 10, targetMaxReps: 12 },
     ],
   });
-
   const sessao1 = await prisma.workoutSession.create({
     data: {
       workoutPlanId: planoA.id,
@@ -245,7 +221,6 @@ async function main() {
       finishedAt: new Date(anoAtual, mesAtual, hoje.getDate() - 2, 19, 5, 0),
     },
   });
-
   await prisma.setLog.createMany({
     data: [
       { workoutSessionId: sessao1.id, exerciseId: exSupino.id, reps: 12, weight: 50.0, toFailure: false },
@@ -254,10 +229,6 @@ async function main() {
       { workoutSessionId: sessao1.id, exerciseId: exTricepsPulley.id, reps: 15, weight: 20.0, toFailure: false },
     ],
   });
-
-  // ==========================================
-  // 5. TAREFAS (TASKS)
-  // ==========================================
   console.log('📋 Cadastrando tarefas de demonstração...');
   await prisma.task.createMany({
     data: [
@@ -284,10 +255,6 @@ async function main() {
       },
     ],
   });
-
-  // ==========================================
-  // 6. NUTRIÇÃO - ALIMENTOS GLOBAIS (PUBLICOS)
-  // ==========================================
   console.log('🥗 Cadastrando biblioteca de alimentos globais...');
   const foodFrango = await prisma.food.create({
     data: {
@@ -303,7 +270,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodArroz = await prisma.food.create({
     data: {
       name: 'Arroz Branco Cozido',
@@ -318,7 +284,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodOvo = await prisma.food.create({
     data: {
       name: 'Ovo de Galinha Cozido',
@@ -333,7 +298,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodBanana = await prisma.food.create({
     data: {
       name: 'Banana Prata',
@@ -348,7 +312,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodAveia = await prisma.food.create({
     data: {
       name: 'Aveia em Flocos Finos',
@@ -363,7 +326,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodAzeite = await prisma.food.create({
     data: {
       name: 'Azeite de Oliva Extra Virgem',
@@ -378,7 +340,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodWhey = await prisma.food.create({
     data: {
       name: '100% Whey Protein Concentrado',
@@ -393,7 +354,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodFeijao = await prisma.food.create({
     data: {
       name: 'Feijão Preto Cozido',
@@ -408,7 +368,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodMaca = await prisma.food.create({
     data: {
       name: 'Maçã Fuji Fresca',
@@ -423,7 +382,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodPaoIntegral = await prisma.food.create({
     data: {
       name: 'Pão 100% Integral Tradicional',
@@ -438,7 +396,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodPatinho = await prisma.food.create({
     data: {
       name: 'Patinho Moído Grelhado',
@@ -453,7 +410,6 @@ async function main() {
       userId: null,
     },
   });
-
   const foodBatataDoce = await prisma.food.create({
     data: {
       name: 'Batata Doce Cozida',
@@ -469,10 +425,6 @@ async function main() {
     },
   });
   console.log('✅ 12 alimentos globais cadastrados com sucesso.');
-
-  // ==========================================
-  // 7. NUTRIÇÃO - META NUTRICIONAL (NUTRITION GOAL)
-  // ==========================================
   console.log('🎯 Configurando meta nutricional para o usuário demo...');
   await prisma.nutritionGoal.create({
     data: {
@@ -486,30 +438,21 @@ async function main() {
     },
   });
   console.log('✅ Meta nutricional registrada (2000 kcal | 160g P | 220g C | 60g G | 75.0 kg alvo).');
-
-  // ==========================================
-  // 8. NUTRIÇÃO - HISTÓRICO DE 30 DIAS DE PESAGEM
-  // ==========================================
   console.log('⚖️ Gerando histórico de 30 dias de pesagens com evolução gradual...');
   const weightLogsData: Prisma.WeightLogCreateManyInput[] = [];
-  const baseWeight = 81.5; // Peso há 30 dias
-
+  const baseWeight = 81.5;
   for (let i = 29; i >= 0; i--) {
     const logDate = new Date(hoje);
     logDate.setDate(hoje.getDate() - i);
     logDate.setHours(7, 30, 0, 0);
-
-    // Tendência linear de 81.5 kg -> 78.0 kg com oscilações reais (+- 0.2 kg)
     const progress = (29 - i) / 29;
     const trendWeight = baseWeight - progress * 3.5;
     const fluctuation = (((i * 7) % 5) - 2) * 0.08;
     const dayWeight = Math.round((trendWeight + fluctuation) * 100) / 100;
-
     let notes: string | null = null;
     if (i === 29) notes = 'Início do acompanhamento e novo protocolo';
     if (i === 15) notes = 'Pesagem quinzenal após reajuste calórico';
     if (i === 0) notes = 'Pesagem matinal em jejum';
-
     weightLogsData.push({
       userId,
       weight: dayWeight,
@@ -517,21 +460,14 @@ async function main() {
       notes,
     });
   }
-
   await prisma.weightLog.createMany({
     data: weightLogsData,
   });
   console.log('✅ 30 registros de pesagem gerados com sucesso.');
-
-  // ==========================================
-  // 9. NUTRIÇÃO - REFEIÇÕES DO DIA ATUAL
-  // ==========================================
   console.log('🍽️ Registrando refeições diárias e snapshots calculados...');
   const todayOnlyDate = new Date(
     Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()),
   );
-
-  // Refeição 1: Café da Manhã (BREAKFAST)
   const breakfast = await prisma.mealLog.create({
     data: {
       userId,
@@ -540,16 +476,10 @@ async function main() {
       notes: 'Café da manhã reforçado pré-treino',
     },
   });
-
-  // Ovos (2 unidades = 100g -> fator 2.0 em relação a 50g)
   const ovoFactor = 100 / 50;
-  // Pão Integral (1 unidade = 50g -> fator 1.0 em relação a 50g)
   const paoFactor = 50 / 50;
-  // Banana Prata (1 unidade = 100g -> fator 1.0 em relação a 100g)
   const bananaFactor = 100 / 100;
-  // Whey Protein (1 scoop = 30g -> fator 1.0 em relação a 30g)
   const wheyFactor = 30 / 30;
-
   await prisma.mealFoodItem.createMany({
     data: [
       {
@@ -594,8 +524,6 @@ async function main() {
       },
     ],
   });
-
-  // Refeição 2: Almoço (LUNCH)
   const lunch = await prisma.mealLog.create({
     data: {
       userId,
@@ -604,16 +532,10 @@ async function main() {
       notes: 'Almoço equilibrado pós-treino',
     },
   });
-
-  // Peito de Frango (180g -> fator 1.8)
   const frangoFactor = 180 / 100;
-  // Arroz Branco (150g -> fator 1.5)
   const arrozFactor = 150 / 100;
-  // Feijão Preto (100g -> fator 1.0)
   const feijaoFactor = 100 / 100;
-  // Azeite de Oliva (13g/ml -> fator 1.0)
   const azeiteFactor = 13 / 13;
-
   await prisma.mealFoodItem.createMany({
     data: [
       {
@@ -658,11 +580,9 @@ async function main() {
       },
     ],
   });
-
   console.log('✅ Refeições e snapshots nutricionais gravados com sucesso.');
   console.log('\n🚀 Seeding completo. Todos os módulos estão populados e prontos!');
 }
-
 main()
   .catch((e) => {
     console.error('❌ Erro durante o processo de seeding:', e);

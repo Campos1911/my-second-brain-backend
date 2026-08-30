@@ -15,9 +15,9 @@ import { Prisma } from '../../generated/prisma/client';
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
   private readonly SALT_ROUNDS = 12;
-
   private readonly userSelect: Prisma.UserSelect = {
     id: true,
+    name: true,
     email: true,
     createdAt: true,
     updatedAt: true,
@@ -27,10 +27,10 @@ export class UsersService {
 
   async create(dto: CreateUserDto) {
     const hash = await bcrypt.hash(dto.password, this.SALT_ROUNDS);
-
     try {
       return await this.prisma.user.create({
         data: {
+          name: dto.name,
           email: dto.email,
           passwordHash: hash,
         },
@@ -70,20 +70,16 @@ export class UsersService {
       where: { id, deletedAt: null },
       select: this.userSelect,
     });
-
     if (!user) throw new NotFoundException('Usuário não encontrado.');
     return user;
   }
 
   async update(id: string, dto: UpdateUserDto) {
     const { password, ...rest } = dto;
-
     const dataToUpdate: Prisma.UserUpdateInput = { ...rest };
-
     if (password) {
       dataToUpdate.passwordHash = await bcrypt.hash(password, this.SALT_ROUNDS);
     }
-
     try {
       return await this.prisma.user.update({
         where: { id, deletedAt: null },

@@ -1,17 +1,14 @@
-import { IsEmail, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserDto {
-  /**
-   * Endereço de e-mail do novo usuário. Deve ser único no sistema.
-   * @example "novo.usuario@email.com"
-   */
-  @IsEmail()
+  @IsString()
+  @IsNotEmpty({ message: 'O nome é obrigatório.' })
+  name!: string;
+
+  @IsEmail({}, { message: 'Formato de e-mail inválido.' })
   email!: string;
 
-  /**
-   * Senha de acesso do usuário.
-   * @example "senhaForte123"
-   */
   @IsString()
+  @IsNotEmpty({ message: 'A senha é obrigatória.' })
   password!: string;
 }

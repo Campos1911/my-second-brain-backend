@@ -10,6 +10,7 @@ datasource db {
 
 model User {
   id           String    @id @default(uuid())
+  name         String
   email        String    @unique
   passwordHash String
   createdAt    DateTime  @default(now())
@@ -359,7 +360,6 @@ model NutritionGoal {
 
   @@index([userId])
 }
-
 
 // ==========================================
 // MODELOS DE METAS DE PESO (WEIGHT GOALS)
