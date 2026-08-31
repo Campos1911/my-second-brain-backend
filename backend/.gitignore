@@ -58,6 +58,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 /generated/prisma
 
 backups/
+.backups/
 script.js
 script.cjs
 repomix.config.json

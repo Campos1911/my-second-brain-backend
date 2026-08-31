@@ -44,7 +44,6 @@ describe('WorkoutSessionsService', () => {
 
     service = module.get<WorkoutSessionsService>(WorkoutSessionsService);
     prisma = module.get(PrismaService);
-
     jest.clearAllMocks();
   });
 
@@ -52,12 +51,44 @@ describe('WorkoutSessionsService', () => {
     const userId = 'user-uuid-1';
     const dto = { workoutPlanId: 'plan-uuid-1' };
 
-    it('deve iniciar uma sessão de treino se o plano existir e não houver treino ativo', async () => {
+    it('deve iniciar uma sessão de treino e retornar os dados enriquecidos com badges', async () => {
       prisma.workoutPlan.findFirst.mockResolvedValue({
         id: dto.workoutPlanId,
         name: 'Treino A',
       });
-      prisma.workoutSession.findFirst.mockResolvedValue(null);
+      // Nenhuma sessão ativa no momento
+      prisma.workoutSession.findFirst
+        .mockResolvedValueOnce(null) // activeSession check
+        .mockResolvedValueOnce({    // getLiveSession query
+          id: 'session-uuid-1',
+          workoutPlanId: dto.workoutPlanId,
+          startedAt: new Date(),
+          finishedAt: null,
+          workoutPlan: {
+            id: dto.workoutPlanId,
+            name: 'Treino A',
+            exercises: [
+              {
+                exerciseId: 'ex-1',
+                targetSets: 4,
+                targetMinReps: 8,
+                targetMaxReps: 12,
+                exercise: {
+                  name: 'Supino Reto',
+                  category: { id: 'cat-1', name: 'Peito' },
+                },
+              },
+            ],
+          },
+          setLogs: [],
+        })
+        .mockResolvedValueOnce({    // getLastWorkoutLogsForExercise
+          id: 'old-session-uuid',
+          setLogs: [
+            { id: 'old-1', reps: 10, weight: new Prisma.Decimal(60), toFailure: false },
+          ],
+        });
+
       prisma.workoutSession.create.mockResolvedValue({
         id: 'session-uuid-1',
         workoutPlanId: dto.workoutPlanId,
@@ -65,15 +96,14 @@ describe('WorkoutSessionsService', () => {
       });
 
       const result = await service.startSession(userId, dto);
-
-      expect(prisma.workoutPlan.findFirst).toHaveBeenCalled();
-      expect(prisma.workoutSession.findFirst).toHaveBeenCalled();
-      expect(result).toHaveProperty('id', 'session-uuid-1');
+      expect(result).toHaveProperty('sessionId', 'session-uuid-1');
+      expect(result.exercises[0].lastWorkoutLogs).toEqual([
+        { reps: 10, weight: 60, toFailure: false },
+      ]);
     });
 
     it('deve lançar NotFoundException se o plano de treino não existir', async () => {
       prisma.workoutPlan.findFirst.mockResolvedValue(null);
-
       await expect(service.startSession(userId, dto)).rejects.toThrow(
         NotFoundException,
       );
@@ -111,13 +141,10 @@ describe('WorkoutSessionsService', () => {
         id: sessionId,
         workoutPlanId: 'plan-uuid-1',
       });
-
-      // Ajustado: O mock do exercício agora não simula a coluna workoutPlanId diretamente
       prisma.exercise.findFirst.mockResolvedValue({
         id: dto.exerciseId,
         name: 'Supino Reto',
       });
-
       const expectedLog = {
         id: 'log-uuid-1',
         exerciseId: dto.exerciseId,
@@ -129,8 +156,14 @@ describe('WorkoutSessionsService', () => {
       prisma.setLog.create.mockResolvedValue(expectedLog);
 
       const result = await service.logSet(sessionId, userId, dto);
-
-      expect(result).toEqual(expectedLog);
+      expect(result).toEqual({
+        id: 'log-uuid-1',
+        exerciseId: dto.exerciseId,
+        reps: 10,
+        weight: 50.0,
+        toFailure: false,
+        createdAt: expectedLog.createdAt,
+      });
     });
   });
 
@@ -143,7 +176,6 @@ describe('WorkoutSessionsService', () => {
         id: exerciseId,
         name: 'Supino Reto',
       });
-
       const mockLogs = [
         {
           id: 'log-1',
@@ -160,11 +192,9 @@ describe('WorkoutSessionsService', () => {
           workoutSession: { startedAt: new Date('2024-03-15T10:00:00Z') },
         },
       ];
-
       prisma.setLog.findMany.mockResolvedValue(mockLogs);
 
       const result = await service.getExerciseProgress(exerciseId, userId);
-
       expect(result.exercise.name).toBe('Supino Reto');
       expect(result.history).toHaveLength(2);
       expect(result.history[0]).toEqual({
@@ -173,9 +203,9 @@ describe('WorkoutSessionsService', () => {
         reps: 10,
         weight: 60.0,
         toFailure: false,
-        volume: 600.0, // 10 * 60.0
+        volume: 600.0,
       });
-      expect(result.history[1].volume).toBe(520.0); // 8 * 65.0
+      expect(result.history[1].volume).toBe(520.0);
     });
   });
 });

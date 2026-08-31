@@ -39,7 +39,7 @@ export class WorkoutSessionsController {
   @Post('start')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
-    summary: 'Iniciar cronômetro e sessão de treino para um plano',
+    summary: 'Iniciar cronômetro e sessão de treino para um plano com badges do último treino',
   })
   @ApiResponse({ status: 201, description: 'Treino iniciado com sucesso.' })
   @ApiResponse({
@@ -51,6 +51,28 @@ export class WorkoutSessionsController {
     @Body() dto: StartSessionDto,
   ) {
     return this.workoutSessionsService.startSession(userId, dto);
+  }
+
+  @Get('active')
+  @ApiOperation({
+    summary: 'Obter treino ativo em andamento (se houver) com badges do último treino',
+  })
+  @ApiResponse({ status: 200, description: 'Treino ativo retornado.' })
+  async getActiveSession(@GetCurrentUserId() userId: string) {
+    return this.workoutSessionsService.getActiveSession(userId);
+  }
+
+  @Get(':id/live')
+  @ApiOperation({
+    summary: 'Obter painel de treino ao vivo com metas e badges de carga do último treino',
+  })
+  @ApiParam({ name: 'id', description: 'ID da sessão de treino (UUID)' })
+  @ApiResponse({ status: 200, description: 'Treino ao vivo carregado com histórico.' })
+  async getLiveSession(
+    @Param('id') sessionId: string,
+    @GetCurrentUserId() userId: string,
+  ) {
+    return this.workoutSessionsService.getLiveSession(sessionId, userId);
   }
 
   @Post(':id/sets')

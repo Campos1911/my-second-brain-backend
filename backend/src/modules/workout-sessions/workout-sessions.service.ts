@@ -17,6 +17,62 @@ export class WorkoutSessionsService {
 
   constructor(private readonly prisma: PrismaService) {}
 
+  /**
+   * Busca as séries da última sessão anterior em que o exercício foi executado
+   */
+  private async getLastWorkoutLogsForExercise(
+    userId: string,
+    exerciseId: string,
+    currentSessionId?: string,
+  ) {
+    const lastSession = await this.prisma.workoutSession.findFirst({
+      where: {
+        userId,
+        deletedAt: null,
+        ...(currentSessionId ? { id: { not: currentSessionId } } : {}),
+        setLogs: {
+          some: {
+            exerciseId,
+            deletedAt: null,
+          },
+        },
+      },
+      orderBy: {
+        startedAt: 'desc',
+      },
+      include: {
+        setLogs: {
+          where: {
+            exerciseId,
+            deletedAt: null,
+          },
+          orderBy: {
+            createdAt: 'asc',
+          },
+          select: {
+            id: true,
+            reps: true,
+            weight: true,
+            toFailure: true,
+          },
+        },
+      },
+    });
+
+    if (!lastSession || !lastSession.setLogs) {
+      return [];
+    }
+
+    return lastSession.setLogs.map((log) => ({
+      reps: log.reps,
+      weight: Number(log.weight),
+      toFailure: log.toFailure,
+    }));
+  }
+
+  /**
+   * Inicia cronômetro e sessão de treino para um plano
+   */
   async startSession(userId: string, dto: StartSessionDto) {
     const plan = await this.prisma.workoutPlan.findFirst({
       where: {
@@ -47,17 +103,14 @@ export class WorkoutSessionsService {
     }
 
     try {
-      return await this.prisma.workoutSession.create({
+      const session = await this.prisma.workoutSession.create({
         data: {
           workoutPlanId: dto.workoutPlanId,
           userId,
         },
-        include: {
-          workoutPlan: {
-            select: { name: true },
-          },
-        },
       });
+
+      return this.getLiveSession(session.id, userId);
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException(
@@ -66,6 +119,110 @@ export class WorkoutSessionsService {
     }
   }
 
+  /**
+   * Retorna a sessão ativa em andamento com badges do último treino (se existir)
+   */
+  async getActiveSession(userId: string) {
+    const activeSession = await this.prisma.workoutSession.findFirst({
+      where: {
+        userId,
+        finishedAt: null,
+        deletedAt: null,
+      },
+      orderBy: { startedAt: 'desc' },
+    });
+
+    if (!activeSession) {
+      return null;
+    }
+
+    return this.getLiveSession(activeSession.id, userId);
+  }
+
+  /**
+   * Monta o painel de treino ao vivo com metas e badges do treino anterior
+   */
+  async getLiveSession(sessionId: string, userId: string) {
+    const session = await this.prisma.workoutSession.findFirst({
+      where: {
+        id: sessionId,
+        userId,
+        deletedAt: null,
+      },
+      include: {
+        workoutPlan: {
+          include: {
+            exercises: {
+              include: {
+                exercise: {
+                  include: {
+                    category: {
+                      select: { id: true, name: true },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        setLogs: {
+          where: { deletedAt: null },
+          orderBy: { createdAt: 'asc' },
+        },
+      },
+    });
+
+    if (!session) {
+      throw new NotFoundException('Sessão de treino não encontrada.');
+    }
+
+    const exercises = await Promise.all(
+      session.workoutPlan.exercises.map(async (wpe) => {
+        const lastWorkoutLogs = await this.getLastWorkoutLogsForExercise(
+          userId,
+          wpe.exerciseId,
+          session.id,
+        );
+
+        const currentSessionLogs = session.setLogs
+          .filter((log) => log.exerciseId === wpe.exerciseId)
+          .map((log) => ({
+            id: log.id,
+            reps: log.reps,
+            weight: Number(log.weight),
+            toFailure: log.toFailure,
+            createdAt: log.createdAt,
+          }));
+
+        return {
+          exerciseId: wpe.exerciseId,
+          name: wpe.exercise.name,
+          category: wpe.exercise.category,
+          targets: {
+            sets: wpe.targetSets,
+            minReps: wpe.targetMinReps,
+            maxReps: wpe.targetMaxReps,
+          },
+          lastWorkoutLogs,
+          currentSessionLogs,
+        };
+      }),
+    );
+
+    return {
+      sessionId: session.id,
+      workoutPlanId: session.workoutPlanId,
+      workoutPlanName: session.workoutPlan.name,
+      startedAt: session.startedAt,
+      finishedAt: session.finishedAt,
+      isFinished: !!session.finishedAt,
+      exercises,
+    };
+  }
+
+  /**
+   * Registra a execução de uma série na sessão ativa
+   */
   async logSet(sessionId: string, userId: string, dto: LogSetDto) {
     const session = await this.prisma.workoutSession.findFirst({
       where: {
@@ -101,7 +258,7 @@ export class WorkoutSessionsService {
     }
 
     try {
-      return await this.prisma.setLog.create({
+      const setLog = await this.prisma.setLog.create({
         data: {
           workoutSessionId: sessionId,
           exerciseId: dto.exerciseId,
@@ -109,21 +266,25 @@ export class WorkoutSessionsService {
           weight: new Prisma.Decimal(dto.weight),
           toFailure: dto.toFailure ?? false,
         },
-        select: {
-          id: true,
-          exerciseId: true,
-          reps: true,
-          weight: true,
-          toFailure: true,
-          createdAt: true,
-        },
       });
+
+      return {
+        id: setLog.id,
+        exerciseId: setLog.exerciseId,
+        reps: setLog.reps,
+        weight: Number(setLog.weight),
+        toFailure: setLog.toFailure,
+        createdAt: setLog.createdAt,
+      };
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException('Erro ao salvar a série.');
     }
   }
 
+  /**
+   * Finaliza a sessão de treino
+   */
   async finishSession(sessionId: string, userId: string) {
     const session = await this.prisma.workoutSession.findFirst({
       where: {
@@ -163,7 +324,6 @@ export class WorkoutSessionsService {
 
   async findAll(userId: string, page = 1, limit = 10) {
     const skip = (page - 1) * limit;
-
     const where: Prisma.WorkoutSessionWhereInput = {
       userId,
       deletedAt: null,
@@ -233,12 +393,10 @@ export class WorkoutSessionsService {
     try {
       await this.prisma.$transaction(async (tx) => {
         const now = new Date();
-
         await tx.workoutSession.update({
           where: { id },
           data: { deletedAt: now },
         });
-
         await tx.setLog.updateMany({
           where: { workoutSessionId: id, deletedAt: null },
           data: { deletedAt: now },
@@ -256,12 +414,7 @@ export class WorkoutSessionsService {
     }
   }
 
-  // ==========================================
-  // NOVOS MÉTODOS: CONTROLE INDIVIDUAL DE SÉRIES
-  // ==========================================
-
   private async findActiveSetLogOwnedByUser(setId: string, userId: string) {
-    // Apenas permite alteração de séries em sessões ativas (treino em andamento)
     const setLog = await this.prisma.setLog.findFirst({
       where: {
         id: setId,
@@ -317,7 +470,6 @@ export class WorkoutSessionsService {
         where: { id: setId },
         data: { deletedAt: new Date() },
       });
-
       return { message: 'Série removida com sucesso.' };
     } catch (error) {
       this.logger.error(error);
@@ -326,7 +478,6 @@ export class WorkoutSessionsService {
   }
 
   async getExerciseProgress(exerciseId: string, userId: string) {
-    // CORRIGIDO: Valida a propriedade do exercício de forma simples diretamente pelo userId ou se é global
     const exercise = await this.prisma.exercise.findFirst({
       where: {
         id: exerciseId,
@@ -339,7 +490,6 @@ export class WorkoutSessionsService {
       throw new NotFoundException('Exercício não localizado ou inativo.');
     }
 
-    // 2. Buscar histórico completo de séries realizadas nesse exercício
     const logs = await this.prisma.setLog.findMany({
       where: {
         exerciseId,
@@ -359,7 +509,6 @@ export class WorkoutSessionsService {
       },
     });
 
-    // 3. Mapear e estruturar os dados para exibição do progresso
     const progress = logs.map((log) => {
       const weightNum = Number(log.weight);
       return {
@@ -368,7 +517,7 @@ export class WorkoutSessionsService {
         reps: log.reps,
         weight: weightNum,
         toFailure: log.toFailure,
-        volume: weightNum * log.reps, // Volume total levantado (Peso x Repetições)
+        volume: weightNum * log.reps,
       };
     });
 
